@@ -1,9 +1,32 @@
-# 仓库介绍
+# 首页
 
-> An awesome project.
+---
 
-学习笔记 ^&^
+## 介绍
+
+> 记录学习笔记 [链接](https://baicai220.github.io/)
+
+---
 
 
 
-https://baicai220.github.io/
+## 导航
+
++ [Java技术栈](notes/Java技术栈/index.md)
+    + [Java语法-面向对象](notes/Java技术栈/Java语法-面向对象.md)
++ [机器学习](notes/机器学习/index.md)
+    + [CNN](notes/机器学习/CNN.md)
+    + [MLP](notes/机器学习/MLP.md)
+    + [RNN](notes/机器学习/RNN.md)
+    + [StyleGAN2](notes/机器学习/StyleGAN2.md)
+    + [Transformer](notes/机器学习/Transformer.md)
+    + [b站小土堆](notes/机器学习/b站小土堆.md)
+    + [交叉熵损失](notes/机器学习/交叉熵损失.md)
+    + [动手学深度学习-pytorch](notes/机器学习/动手学深度学习-pytorch.md)
+    + [反向传播](notes/机器学习/反向传播.md)
+    + [图神经网络](notes/机器学习/图神经网络.md)
+    + [对抗样本攻击-CW](notes/机器学习/对抗样本攻击-CW.md)
+    + [感知机](notes/机器学习/感知机.md)
+    + [注意力机制](notes/机器学习/注意力机制.md)
+    + [生成对抗网络](notes/机器学习/生成对抗网络.md)
+    + [聚类](notes/机器学习/聚类.md)
