@@ -1,17 +1,4 @@
 # 目录
 
-- [CNN](notes/机器学习/CNN.md)
-- [MLP](notes/机器学习/MLP.md)
-- [RNN](notes/机器学习/RNN.md)
-- [StyleGAN2](notes/机器学习/StyleGAN2.md)
-- [Transformer](notes/机器学习/Transformer.md)
-- [b站小土堆](notes/机器学习/b站小土堆.md)
-- [交叉熵损失](notes/机器学习/交叉熵损失.md)
-- [动手学深度学习-pytorch](notes/机器学习/动手学深度学习-pytorch.md)
-- [反向传播](notes/机器学习/反向传播.md)
-- [图神经网络](notes/机器学习/图神经网络.md)
-- [对抗样本攻击-CW](notes/机器学习/对抗样本攻击-CW.md)
 - [感知机](notes/机器学习/感知机.md)
-- [注意力机制](notes/机器学习/注意力机制.md)
-- [生成对抗网络](notes/机器学习/生成对抗网络.md)
 - [聚类](notes/机器学习/聚类.md)
