@@ -1,2 +1,0 @@
-# StyleGAN2
-
