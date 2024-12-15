@@ -5,4 +5,4 @@ Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [docume
 
 ## Quick Start
 
-![image-20241215164715478](./imgs/image-20241215164715478.png)
+![image-20241215164715478](../../images/image-20241215164715478.png)
