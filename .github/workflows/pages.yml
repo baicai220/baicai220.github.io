@@ -33,10 +33,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install pandoc
-      - name: uninstall hexo-renderer-marked  # Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器
-        run: npm uninstall hexo-renderer-marked --save
-      - name: install hexo-renderer-pandoc
-        run: npm install hexo-renderer-pandoc --save
+      # Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器
+      # - name: uninstall hexo-renderer-marked  
+      #   run: npm uninstall hexo-renderer-marked --save
+      # - name: install hexo-renderer-pandoc
+      #   run: npm install hexo-renderer-pandoc --save
       - name: Build
         run: npm run build
       - name: Upload Pages artifact

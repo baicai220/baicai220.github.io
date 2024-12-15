@@ -40,7 +40,10 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
+marked:
+  # prependRoot: true
+  # postAsset: true
 relative_link: false
 future: true
 syntax_highlighter: highlight.js
@@ -97,6 +100,9 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: fluid
+
+plugins:
+  - hexo-asset-img
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
