@@ -1,0 +1,94 @@
+navbar:
+  blog_title: 爱搬砖的驴
+
+
+# 懒加载
+lazyload:
+  enable: true
+  loading_img: /img/loading.gif
+  onlypost: false
+  offset_factor: 2
+
+font:  # 主题字体配置
+  font_size: 16px        # 全局字号
+  font_family:           # 全局字体族
+  code_font_size: 85%    # 代码的字号
+
+
+force_https: true
+
+
+dark_mode:
+  enable: true
+  default: auto
+
+index:
+  post_url_target: _self
+
+
+code:
+  copy_btn: true
+  highlight:
+    enable: true
+    line_number: true
+    lib: "highlightjs"
+    highlightjs:
+      style: 'Github Gist'
+      bg_color: false
+    prismjs:
+      style: "default"
+      preprocess: true
+
+markdown:
+  plugins:
+    - "@traptitech/markdown-it-katex"
+
+post:
+  footnote:
+    enable: true
+    header: '参考'
+  math:
+    enable: true
+    specific: true
+    engine: mathjax
+  mermaid:
+    enable: true
+    specific: true
+    options:
+
+
+tag:
+  tagcloud:
+    min_font: 15
+    max_font: 30
+    unit: px  # 字号单位
+    start_color: "#BBBBEE"
+    end_color: "#337ab7"
+
+
+about:
+  avatar: /img/avatar.png
+  name: "光头强"
+  intro: "常用链接~"
+  icons:
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
+    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
+    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
+    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
+    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
+    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
+
+
+page:
+  banner_img: /img/bg/a2f14941a8b132c5c67c40a825f58cbf.png
+  banner_img_height: 70
+  banner_mask_alpha: 0.3
