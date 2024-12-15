@@ -102,6 +102,6 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/baicai220/baicai220.github.io
+  repo: https://github.com/baicai220/baicai220.github.io.git
   # example, https://github.com/hexojs/hexojs.github.io
   branch: gh-pages
