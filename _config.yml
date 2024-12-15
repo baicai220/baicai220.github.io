@@ -40,7 +40,7 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: true
+post_asset_folder: true # 这个设为true，会在hexo new 文章时生成文章对应的同名文件夹，资源文件放在这个生成的文件夹中。
 marked:
   # prependRoot: true
   # postAsset: true
@@ -101,6 +101,7 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: fluid
 
+# 这个会这样转换：ml.md文件中的![](ml/image.jpg) 将会被解析为 <img src="/2020/01/02/foo/image.jpg">及编译成html后的网页路径
 plugins:
   - hexo-asset-img
 
