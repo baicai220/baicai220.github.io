@@ -19,7 +19,7 @@ jobs:
         with:
           # Examples: 20, 18.19, >=16.20.2, lts/Iron, lts/Hydrogen, *, latest, current, node
           # Ref: https://github.com/actions/setup-node#supported-version-syntax
-          node-version: "v20.18.0"
+          node-version: "v20.18.0" # 这里要更换成电脑本地上的node版本
       - name: Cache NPM dependencies
         uses: actions/cache@v4
         with:
@@ -29,11 +29,11 @@ jobs:
             ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm install
-      - name: Install pandoc
+      - name: Install pandoc  #支持数学公式的引擎mathjax需要pandoc，需要在ubuntu上安装pandoc
         run: |
           sudo apt-get update
           sudo apt-get install pandoc
-      - name: uninstall hexo-renderer-marked
+      - name: uninstall hexo-renderer-marked  # Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器
         run: npm uninstall hexo-renderer-marked --save
       - name: install hexo-renderer-pandoc
         run: npm install hexo-renderer-pandoc --save
