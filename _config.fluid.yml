@@ -5,7 +5,7 @@ navbar:
 index:
   slogan:
     enable: true
-    text: 无人扶我青云志，我自踏血之山巅~
+    text: 无人扶我青云志，我自踏雪至山巅~
   post_url_target: _self
   banner_img: /img/a2f14941a8b132c5c67c40a825f58cbf.jpg # 每一页都有这个属性
 
