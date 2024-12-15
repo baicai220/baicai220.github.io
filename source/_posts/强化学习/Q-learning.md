@@ -8,5 +8,5 @@ categories:
 math: true
 ---
 
-# Q-learning
+# Q学习
 
