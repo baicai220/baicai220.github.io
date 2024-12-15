@@ -2,6 +2,13 @@
 navbar:
   blog_title: 爱搬砖的驴
 
+index:
+  slogan:
+    enable: true
+    text: 无人扶我青云志，我自踏血之山巅~
+  post_url_target: _self
+  banner_img: /img/a2f14941a8b132c5c67c40a825f58cbf.jpg # 每一页都有这个属性
+
 
 # 懒加载
 lazyload:
@@ -23,9 +30,6 @@ dark_mode:
   enable: true
   default: auto
 
-index:
-  post_url_target: _self
-
 
 code:
   copy_btn: true
@@ -40,9 +44,6 @@ code:
       style: "default"
       preprocess: true
 
-markdown:
-  plugins:
-    - "@traptitech/markdown-it-katex"
 
 post:
   footnote:
@@ -89,7 +90,6 @@ about:
     - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
 
 
-page:
-  banner_img: /img/bg/a2f14941a8b132c5c67c40a825f58cbf.png
-  banner_img_height: 70
-  banner_mask_alpha: 0.3
+
+
+
