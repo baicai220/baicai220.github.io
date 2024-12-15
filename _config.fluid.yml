@@ -50,7 +50,7 @@ post:
   math:
     enable: true
     specific: true
-    engine: mathjax
+    engine: katex
   mermaid:
     enable: true
     specific: true
