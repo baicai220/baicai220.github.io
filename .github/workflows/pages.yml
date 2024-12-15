@@ -29,7 +29,9 @@ jobs:
             ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm install
+      - name: uninstall hexo-renderer-marked
         run: npm uninstall hexo-renderer-marked --save
+      - name: install hexo-renderer-pandoc
         run: npm install hexo-renderer-pandoc --save
       - name: Build
         run: npm run build
