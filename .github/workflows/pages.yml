@@ -29,6 +29,8 @@ jobs:
             ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm install
+        run: npm uninstall hexo-renderer-marked --save
+        run: npm install hexo-renderer-pandoc --save
       - name: Build
         run: npm run build
       - name: Upload Pages artifact
