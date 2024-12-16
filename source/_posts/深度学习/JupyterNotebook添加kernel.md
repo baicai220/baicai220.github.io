@@ -1,3 +1,16 @@
+---
+title: JupyterNotebook添加kernel
+date: 2024-12-17 00:08:31
+tags:
+  - jupyter
+  - 深度学习
+categories:
+  - 深度学习 
+math: true
+---
+
+
+
 # JupyterNotebook添加kernel
 
 ### kernal切换
