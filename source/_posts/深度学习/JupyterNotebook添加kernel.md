@@ -1,4 +1,4 @@
-# Jupyter Notebook添加kernel
+# JupyterNotebook添加kernel
 
 ### kernal切换
 
