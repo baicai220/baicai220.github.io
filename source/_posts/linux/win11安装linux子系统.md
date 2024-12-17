@@ -58,7 +58,7 @@ categories:
 ### linux子系统和win11共享文件
 
 + linux子系统查看win11文件
-  + 在linux子系统中输入`df -h`，就能看到挂载卷，可以看到C\D\E盘都被挂载进来了，这种方式IO性能不好，对于频繁使用的文件，最好还是拷贝到linux子系统中。
+  + 在linux子系统中输入`df -h`，就能看到挂载卷，可以看到C、D、E盘都被挂载进来了，这种方式IO性能不好，对于频繁使用的文件，最好还是拷贝到linux子系统中。
 + win11查看linux子系统文件
   + <img src="win11安装linux子系统/image-20241205191400409.png" alt="image-20241205191400409" style="zoom:50%;" />
 
@@ -117,7 +117,7 @@ categories:
   + 比如配置网络
 
     + Windows电脑IP为10.11.44.15，但是wsl ip地址为172.25.18.117，想让Windows和WSL共享相同的IP地址
-    + 在win用户目录(C:\Users\zhang)新建文件 .wslconfig，用记事本打开并添加`networkingMode=mirrored`
+    + 在win用户目录(`C:\Users\zhang`)新建文件 .wslconfig，用记事本打开并添加`networkingMode=mirrored`
     + 在PowerShell中输入 `wsl --shutdown`（关闭所有wsl），等待8秒
     + 再次进入wsl就能看到ip地址为10.11.44.15
 
