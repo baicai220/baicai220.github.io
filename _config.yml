@@ -42,6 +42,8 @@ filename_case: 0
 render_drafts: false
 post_asset_folder: true # 这个设为true，会在hexo new 文章时生成文章对应的同名文件夹，资源文件放在这个生成的文件夹中。
 marked:
+  gfm: true
+
   # prependRoot: true
   # postAsset: true
 relative_link: false
@@ -112,3 +114,6 @@ deploy:
   repo: https://github.com/baicai220/baicai220.github.io.git
   # example, https://github.com/hexojs/hexojs.github.io
   branch: gh-pages
+
+
+
