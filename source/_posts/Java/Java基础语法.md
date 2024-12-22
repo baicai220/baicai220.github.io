@@ -1,5 +1,5 @@
 ---
-title: post
+title: Java基础语法
 tags:
   - null
 categories:
