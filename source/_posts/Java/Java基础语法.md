@@ -1,9 +1,9 @@
 ---
 title: Java基础语法
 tags:
-  - null
+  - Java
 categories:
-  - null
+  - Java
 math: true
 date: 2024-12-22 16:27:07
 ---
