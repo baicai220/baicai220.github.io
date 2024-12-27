@@ -1,5 +1,5 @@
 ---
-title: Javaweb学习
+title: Jhtml&css&js
 tags:
   - Java
   - Java Web
@@ -391,7 +391,7 @@ js特点：
   + `== `符号,如果两端的数据类型不一致,会尝试将两端的数据转换成number,再对比number大小
     + '123'  这种字符串可以转换成数字
     + true会被转换成1 false会被转换成0
-  + `=== ` 符号,如果两端数据类型不一致,直接返回false,数据类型一致在比较是否相同\
+  + `=== ` 符号,如果两端数据类型不一致,直接返回false,数据类型一致在比较是否相同
 + 逻辑运算符：`|| &&`
   + 这里直接就是短路运算符，单个的 |   和 &  以及 ^ 是位运算符
 + 条件运算符：` 条件? 值1 : 值2 `
@@ -968,23 +968,23 @@ for(var i = 0; i < resultArr.length; i++){
 | 元字符                                                       | 描述                                        |
 | :----------------------------------------------------------- | :------------------------------------------ |
 | [.](https://www.runoob.com/jsref/jsref-regexp-dot.html)      | 查找单个字符，除了换行和行结束符。          |
-| [\w](https://www.runoob.com/jsref/jsref-regexp-wordchar.html) | 查找数字、字母及下划线。                    |
-| [\W](https://www.runoob.com/jsref/jsref-regexp-wordchar-non.html) | 查找非单词字符。                            |
-| [\d](https://www.runoob.com/jsref/jsref-regexp-digit.html)   | 查找数字。                                  |
-| [\D](https://www.runoob.com/jsref/jsref-regexp-digit-non.html) | 查找非数字字符。                            |
-| [\s](https://www.runoob.com/jsref/jsref-regexp-whitespace.html) | 查找空白字符。                              |
-| [\S](https://www.runoob.com/jsref/jsref-regexp-whitespace-non.html) | 查找非空白字符。                            |
-| [\b](https://www.runoob.com/jsref/jsref-regexp-begin.html)   | 匹配单词边界。                              |
-| [\B](https://www.runoob.com/jsref/jsref-regexp-begin-not.html) | 匹配非单词边界。                            |
-| \0                                                           | 查找 NULL 字符。                            |
-| [\n](https://www.runoob.com/jsref/jsref-regexp-newline.html) | 查找换行符。                                |
-| \f                                                           | 查找换页符。                                |
-| \r                                                           | 查找回车符。                                |
-| \t                                                           | 查找制表符。                                |
-| \v                                                           | 查找垂直制表符。                            |
-| [\xxx](https://www.runoob.com/jsref/jsref-regexp-octal.html) | 查找以八进制数 xxx 规定的字符。             |
-| [\xdd](https://www.runoob.com/jsref/jsref-regexp-hex.html)   | 查找以十六进制数 dd 规定的字符。            |
-| [\uxxxx](https://www.runoob.com/jsref/jsref-regexp-unicode-hex.html) | 查找以十六进制数 xxxx 规定的 Unicode 字符。 |
+| [\\w](https://www.runoob.com/jsref/jsref-regexp-wordchar.html) | 查找数字、字母及下划线。                    |
+| [\\W](https://www.runoob.com/jsref/jsref-regexp-wordchar-non.html) | 查找非单词字符。                            |
+| [\\d](https://www.runoob.com/jsref/jsref-regexp-digit.html)  | 查找数字。                                  |
+| [\\D](https://www.runoob.com/jsref/jsref-regexp-digit-non.html) | 查找非数字字符。                            |
+| [\\s](https://www.runoob.com/jsref/jsref-regexp-whitespace.html) | 查找空白字符。                              |
+| [\\S](https://www.runoob.com/jsref/jsref-regexp-whitespace-non.html) | 查找非空白字符。                            |
+| [\\b](https://www.runoob.com/jsref/jsref-regexp-begin.html)  | 匹配单词边界。                              |
+| [\\B](https://www.runoob.com/jsref/jsref-regexp-begin-not.html) | 匹配非单词边界。                            |
+| \\0                                                          | 查找 NULL 字符。                            |
+| [\\n](https://www.runoob.com/jsref/jsref-regexp-newline.html) | 查找换行符。                                |
+| \\f                                                          | 查找换页符。                                |
+| \\r                                                          | 查找回车符。                                |
+| \\t                                                          | 查找制表符。                                |
+| \\v                                                          | 查找垂直制表符。                            |
+| [\\xxx](https://www.runoob.com/jsref/jsref-regexp-octal.html) | 查找以八进制数 xxx 规定的字符。             |
+| [\\xdd](https://www.runoob.com/jsref/jsref-regexp-hex.html)  | 查找以十六进制数 dd 规定的字符。            |
+| [\\uxxxx](https://www.runoob.com/jsref/jsref-regexp-unicode-hex.html) | 查找以十六进制数 xxxx 规定的 Unicode 字符。 |
 
 
 
