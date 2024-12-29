@@ -2,7 +2,7 @@
 title: html&css&js
 tags:
   - Java
-  - Java Web
+  - javaweb
   - 前后端
   - html
   - css
