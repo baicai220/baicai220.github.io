@@ -375,7 +375,9 @@ String contextPath = servletContext.getContextPath();
 
 
 
-## HttpServletRequest
+## HttpServletRequest & HttpServletResponse
+
+### HttpServletRequest
 
 + HttpServletRequest是一个接口,其父接口是ServletRequest
 + HttpServletRequest是Tomcat将请求报文转换封装而来的对象,在Tomcat调用service方法时传入
@@ -430,7 +432,7 @@ String contextPath = servletContext.getContextPath();
 
 
 
-##  HttpServletResponse
+###  HttpServletResponse
 
 + HttpServletResponse是一个接口,其父接口是ServletResponse
 + HttpServletResponse是Tomcat预先创建的,在Tomcat调用service方法时传入
@@ -622,9 +624,178 @@ public class ServletA extends HttpServlet {
 
 ### 路径问题
 
+**项目结构：**
+
+![image-20241230134543492](servlet/image-20241230134543492.png)
+
+**打成war包后的结构：**
+
+![image-20241230134751066](servlet/image-20241230134751066.png)
 
 
 
+#### 前端路径问题
+
++ 相对路径情况
+
+  + index.html使用logo：``<img src="static/img/logo.jpg"/>`
+
+  + 获取logo：`http://localhost:8080/demo1_war_exploded/static/img/logo.jpg`
+
+  + `web/a/b/c/test.html`中引入logo.png：`<img src="../../../static/img/logo.png"/>`
+
+  + `web/WEB-INF/views/view1.html`中引入logo.png
+
+    + 需要请求转发获取
+
+      + 
+
+        ```java
+        @WebServlet("/view1Servlet")
+        public class View1Servlet extends HttpServlet {
+            @Override
+            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/views/view1.html");
+                requestDispatcher.forward(req,resp);
+            }
+        }
+        ```
+
+    + 访问路径：`http://localhost:8080/demo1_war_exploded/view1Servlet`
+
+    + view1.html使用logo：`<img src="static/img/logo.png"/>`
+
++ 绝对路径情况
+
+  + 绝对路径的基路径为：`http://localhost:8080/`
+  + `web/index.html`中引入logo.png：`<img src="/demo1_war_exploded/static/img/logo.png"/>`
+  + `web/a/b/c/test.html`中引入logo：`<img src="/demo1_war_exploded/static/img/logo.png"/>`
+
++ base标签使用
+
+  + base 标签定义在head标签中,用于定义相对路径的公共前缀
+
+    + `<base href="/demo1_war_exploded/">`
+
+  + base 标签定义的公共前缀只在相对路径上有效,绝对路径中无效
+
+  + 如果相对路径开头有` ./ `或者`../`修饰,则base标签对该路径同样无效
+
+  + ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <!--定义相对路径的公共前缀,将相对路径转化成了绝对路径-->
+        <base href="/demo1_war_exploded/">
+    </head>
+    <body>
+        <img src="static/img/logo.png">
+    </body>
+    </html>
+    ```
+
++ 缺省项目上下文路径
+
+  + 一旦项目的上下文路径发生变化,所有base标签中的路径都需要改
+  + 将项目的上下文路径进行缺省设置,设置为` /`,所有的绝对路径中就不必填写项目的上下文了,直接就是`/`开头即可
+
+
+
+#### 重定向中的路径问题
+
+> 由`/x/y/z/servletA`重定向到`a/b/c/test.html`
+
+相对路径写法
+
+```java
+@WebServlet("/x/y/z/servletA")
+public class ServletA extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 相对路径重定向到test.html
+        resp.sendRedirect("../../../a/b/c/test.html");
+    }
+}
+```
+
+
+
+绝对路径写法
+
+```java
+//绝对路径中,要写项目上下文路径
+//resp.sendRedirect("/demo1_war_exploded/a/b/c/test.html");
+// 通过ServletContext对象动态获取项目上下文路径
+//resp.sendRedirect(getServletContext().getContextPath()+"/a/b/c/test.html");
+// 缺省项目上下文路径时,直接以/开头即可
+resp.sendRedirect("/a/b/c/test.html");
+```
+
+
+
+
+
+#### 请求转发中的路径问题
+
+> 由`x/y/servletB`请求转发到`a/b/c/test.html`
+
+相对路径：
+
+```java
+@WebServlet("/x/y/servletB")
+public class ServletB extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("../../a/b/c/test.html");
+        requestDispatcher.forward(req,resp);
+    }
+}
+
+
+```
+
+绝对路径：
+
++ 请求转发只能转发到项目内部的资源,其绝对路径无需添加项目上下文路径，请求转发绝对路径的基准路径相当于`http://localhost:8080/demo1_war_exploded`
++ 在项目上下文路径为缺省值时,也无需改变,直接以/开头即可
+
+```java
+@WebServlet("/x/y/servletB")
+public class ServletB extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/a/b/c/test.html");
+        requestDispatcher.forward(req,resp);
+    }
+}
+```
+
++ 目标资源内相对路径处理
+  + 此时需要注意,请求转发是服务器行为,浏览器不知道,地址栏不变化,相当于我们访问test.html的路径为`http://localhost:8080/demo1_war_exploded/x/y/servletB`
+  + 那么此时 test.html资源的所在路径就是`http://localhost:8080/demo1_war_exploded/x/y/`所以test.html中相对路径要基于该路径编写,如果使用绝对路径则不用考虑
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--
+		当前资源路径是     http://localhost:8080/demo1_war_exploded/x/y/servletB
+        当前资源所在路径是  http://localhost:8080/demo1_war_exploded/x/y/
+        目标资源路径=所在资源路径+src属性值 
+		http://localhost:8080/demo1_war_exploded/x/y/../../static/img/logo.png
+        http://localhost:8080/demo1_war_exploded/static/img/logo.png
+		得到目标路径正是目标资源的访问路径	
+    -->
+<img src="../../static/img/logo.png">
+</body>
+</html>
+```
 
 
 
