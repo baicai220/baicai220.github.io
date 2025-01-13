@@ -121,7 +121,6 @@ while(rs.next()){
 ## MyBatis入门程序
 
 - 步骤1：打包方式：jar（这不是web项目，打jar包即可）
-
 ```xml
 <groupId>com.powernode</groupId>
 <artifactId>mybatis-001-introduction</artifactId>
@@ -249,6 +248,7 @@ public class MyBatisConfigFilePath {
 这样写程序健壮性差。
 
 - 在mybatis中提供了一个类：**Resources**【org.apache.ibatis.io.Resources】
+
 ```java
 // 这种方式只能从类路径当中获取资源，也就是说mybatis-config.xml文件需要在类路径下。
 InputStream is = Resources.getResourceAsStream("mybatis-config.xml");
@@ -2239,7 +2239,9 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   // 你的应用逻辑代码
 }
 ```
+
 ### 事务问题
+
 ```java
 public class AccountServiceImpl implements AccountService {
 
@@ -3341,14 +3343,18 @@ public void testSelectAllRetMap(){
 }
 ```
 
-
 ## resultMap结果映射
+
 查询结果的列名和java对象的属性名对应不上怎么办？
 
 - 第一种方式：as 给列起别名（麻烦）
 - 第二种方式：使用resultMap进行结果映射
 - 第三种方式：是否开启驼峰命名自动映射（配置settings）
+
+
+
 ### 使用resultMap进行结果映射
+
 ```java
 List<Car> selectAllByResultMap();
 ```
@@ -3851,8 +3857,13 @@ include标签用来将声明的sql片段包含到某个sql语句当中
 - 第一种方式：一条SQL语句，级联属性映射。
 - 第二种方式：一条SQL语句，association。
 - 第三种方式：两条SQL语句，分步查询。（这种方式常用：优点一是可复用。优点二是支持懒加载。）
+
+
+
 ### 第一种方式：级联属性映射
+
 pojo类Student中添加一个属性：Clazz clazz; 表示学生关联的班级对象。
+
 ```java
 public class Student {
     private Integer sid;
@@ -3949,6 +3960,7 @@ public class StudentMapperTest {
 学生对象关联一个班级对象。
 
 ### 第三种方式：分步查询
+
 其他位置不需要修改，只需要修改以及添加以下三处：
 第一处：association中select位置填写sqlId。sqlId=namespace+id。其中column属性作为这条子sql语句的条件。
 
@@ -4065,7 +4077,11 @@ public class StudentMapperTest {
 
 - 第一种方式：collection
 - 第二种方式：分步查询
+
+
+
 ### 第一种方式：collection
+
 ```java
 public interface ClazzMapper {
 
@@ -4148,6 +4164,7 @@ List<Student> selectByCid(Integer cid);
 
 
 ## 一对多延迟加载
+
 一对多延迟加载机制和多对一是一样的。同样是通过两种方式：
 
 - 第一种：fetchType="lazy"
