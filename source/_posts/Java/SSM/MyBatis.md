@@ -27,6 +27,9 @@ date: 2025-01-13 13:14:03
    - Hibernate（实现了JPA规范）
    - Spring Data（实现了JPA规范）
    - ......
+
+
+
 ## JDBC不足
 
 - 示例代码1：
@@ -101,6 +104,9 @@ while(rs.next()){
    - SQL语句写死在Java程序中，违背开闭原则OCP。
    - 给?传值是繁琐的。不能自动化。
    - 将结果集封装成Java对象是繁琐的，不能自动化。
+
+
+
 ## 了解MyBatis
 
 - MyBatis本质上就是对JDBC的封装，通过MyBatis完成CRUD。
@@ -953,7 +959,11 @@ public void testSqlMapper() throws Exception{
 ```
 执行结果：
 ![41A93BE0-3374-4283-97DE-152288504BE3.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660183887361-baffabf0-4caa-4e64-86d0-5d5dcfb1edd6.png#averageHue=%232d2c2c&clientId=u77faa741-d191-4&from=paste&height=232&id=ubad124f6&originHeight=232&originWidth=1487&originalType=binary&ratio=1&rotation=0&showTitle=false&size=23737&status=done&style=none&taskId=ubf72afc9-79ef-4242-9275-606aa95feec&title=&width=1487)
+
+
+
 ## GodBatis
+
 手写框架之前，如果没有思路，可以先参考一下mybatis的客户端程序，通过客户端程序来逆推需要的类，参考代码：
 ```java
 @Test
@@ -1740,11 +1750,18 @@ public Object selectOne(String sqlId, Object parameterObj){
     return obj;
 }
 ```
+
+
 ## GodBatis使用Maven打包
+
 ![23B91E36-8138-40bd-960F-685051751FBE.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660206374772-d21754cb-0c5f-4a14-921e-d083b4a791c3.png#averageHue=%233b3f43&clientId=u77faa741-d191-4&from=paste&height=424&id=ud190761b&originHeight=424&originWidth=489&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11737&status=done&style=none&taskId=u7b711654-0ab3-40b0-9395-9f98639e6dd&title=&width=489)
 查看本地仓库中是否已经有jar包：
 ![089FD2B9-D3F2-4f62-9A64-2EC66CC8B623.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660206446577-20e8dd84-6b05-48c8-a693-cb0dadfb7979.png#averageHue=%23fbf5f5&clientId=u77faa741-d191-4&from=paste&height=232&id=u0ec7ef39&originHeight=232&originWidth=497&originalType=binary&ratio=1&rotation=0&showTitle=false&size=8571&status=done&style=none&taskId=ub79cbd13-af08-4c00-a5be-feee1bd1563&title=&width=497)
+
+
+
 ## 使用GodBatis
+
 使用GodBatis就和使用MyBatis是一样的。
 第一步：准备数据库表t_user
 ![96BB0AE2-0C47-4e24-AF86-E8B875B5B65A.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660206701289-4ed4661b-7c85-4157-b09c-3a7fe5207399.png#averageHue=%23f7f6f6&clientId=u77faa741-d191-4&from=paste&height=264&id=uef3387dc&originHeight=264&originWidth=796&originalType=binary&ratio=1&rotation=0&showTitle=false&size=12816&status=done&style=none&taskId=ufd123940-ed51-40c8-a680-18ad7e51c77&title=&width=796)
@@ -1930,7 +1947,10 @@ public class GodBatisTest {
 ![4766EF58-0505-4cdb-8539-D3E487D0B40D.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660209177038-ecf701a2-1211-4f0c-b1f6-e2e16c1617d5.png#averageHue=%23333231&clientId=u77faa741-d191-4&from=paste&height=135&id=u32d04b9b&originHeight=135&originWidth=447&originalType=binary&ratio=1&rotation=0&showTitle=false&size=7682&status=done&style=none&taskId=u71f55f3d-42b0-4389-bf0f-179229f7aa2&title=&width=447)
 ![DE9D2710-1999-4ef1-8F7E-822ACB17BF02.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660209186576-54493410-47b7-4496-8007-471473cc6fc6.png#averageHue=%23f3f1f0&clientId=u77faa741-d191-4&from=paste&height=134&id=u1f31d223&originHeight=134&originWidth=443&originalType=binary&ratio=1&rotation=0&showTitle=false&size=6439&status=done&style=none&taskId=udddf5f59-e9ac-437d-873d-d900c3aa5b4&title=&width=443)
 ![CD0A068F-8A77-4ced-B92F-B0CCA2412B3C.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660209193124-908993c5-90d6-4426-a598-7aeac2a6b791.png#averageHue=%238b7760&clientId=u77faa741-d191-4&from=paste&height=195&id=uee2c9fb1&originHeight=195&originWidth=819&originalType=binary&ratio=1&rotation=0&showTitle=false&size=12996&status=done&style=none&taskId=u35b9af92-a008-4883-88b5-605a8697d9b&title=&width=819)
+
+
 ## 总结MyBatis框架的重要实现原理
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 
