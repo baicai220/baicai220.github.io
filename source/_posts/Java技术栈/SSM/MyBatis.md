@@ -4289,7 +4289,7 @@ public void testSelectById2() throws Exception{
 
 **二级缓存的失效：只要两次查询之间出现了增删改操作。二级缓存就会失效。【一级缓存也会失效】**
 **二级缓存的相关配置：**
-![F7BACAAD-5DD9-43e8-A2A5-5AC787BAFFB4.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1661158385819-8074adeb-f769-48f5-8519-a79a515e8631.png#clientId=ubeb36f5f-42dd-4&from=paste&height=294&id=u7f47bc31&originHeight=294&originWidth=667&originalType=binary&ratio=1&rotation=0&showTitle=false&size=24147&status=done&style=none&taskId=u7ec00183-f3f3-465e-abf6-c9edfafcc54&title=&width=667)
+![F7BACAAD-5DD9-43e8-A2A5-5AC787BAFFB4.png](../../../../../../BaiduSyncdisk/Java学习资料/SSM/老杜spring/document/1661158385819-8074adeb-f769-48f5-8519-a79a515e8631.png)
 
 1. eviction：指定从缓存中移除某个对象的淘汰算法。默认采用LRU策略。
    1. LRU：Least Recently Used。最近最少使用。优先淘汰在间隔时间内使用频率最低的对象。(其实还有一种淘汰算法LFU，最不常用。)
@@ -4546,6 +4546,7 @@ typeAliases标签下面进行配置：
 </plugins>
 ```
 ### 第三步：编写Java代码
+
 ```java
 List<Car> selectAll();
 ```
