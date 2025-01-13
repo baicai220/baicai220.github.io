@@ -3505,12 +3505,9 @@ List<Car> cars = mapper.selectByMultiCondition("", 20.0, "燃油车");
 报错：where后面出现了and
 ![3E87EFE6-A4B7-44ba-AC52-F62AC8066B08.png](MyBatis/1660889738193-d5023b6c-13a9-447f-a128-45b36663c8f1.png)
 
-- 可以where后面添加一个恒成立的条件。
+- 可以where后面添加一个恒成立的条件(如0=0）来解决。
 
-![0FC63B04-CDC3-4c0a-BA1B-BEC7C2D91F3E.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660889965103-5e519823-a741-4ebf-b930-e10ffc9a4129.png#clientId=uce76794a-2043-4&from=paste&height=385&id=u324b967e&originHeight=385&originWidth=715&originalType=binary&ratio=1&rotation=0&showTitle=false&size=32847&status=done&style=shadow&taskId=uda995560-f5ff-45d4-9f64-23725051ac5&title=&width=715)
 
-如果三个条件都是空：
-![CB992BC7-3C95-4c47-96BE-778863905BDD.png](https://cdn.nlark.com/yuque/0/2022/png/21376908/1660890238928-6f889bdf-9702-4cd7-a0ef-b875977f42f9.png#clientId=uce76794a-2043-4&from=paste&height=160&id=u2f20b163&originHeight=160&originWidth=637&originalType=binary&ratio=1&rotation=0&showTitle=false&size=15829&status=done&style=shadow&taskId=ub40b6c73-aa72-45f1-b645-522f7bf6055&title=&width=637)
 
 
 
