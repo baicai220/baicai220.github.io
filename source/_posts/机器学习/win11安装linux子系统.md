@@ -5,7 +5,7 @@ tags:
   - wsl
   - linux
 categories:
-  - linux
+  - 机器学习
 ---
 
 
