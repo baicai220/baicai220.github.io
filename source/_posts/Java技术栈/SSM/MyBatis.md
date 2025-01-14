@@ -3,7 +3,7 @@ title: MyBatis
 tags:
   - mybatis
 categories:
-  - Java
+  - Java技术栈
 date: 2025-01-13 13:14:03
 ---
 

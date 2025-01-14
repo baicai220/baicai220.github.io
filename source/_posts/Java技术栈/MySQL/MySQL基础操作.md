@@ -4,7 +4,7 @@ date: 2024-12-22 15:11:31
 tags:
   - mysql
 categories:
-  - mysql
+  - Java技术栈
 ---
 
 ## mysql概述

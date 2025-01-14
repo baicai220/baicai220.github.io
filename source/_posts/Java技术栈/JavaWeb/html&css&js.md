@@ -1,7 +1,7 @@
 ---
 title: html&css&js
 tags:
-  - Java
+  - java
   - javaweb
   - 前后端
   - html
@@ -9,7 +9,7 @@ tags:
   - js
   - servlet
 categories:
-  - Java
+  - Java技术栈
 date: 2024-12-24 17:54:16
 ---
 
