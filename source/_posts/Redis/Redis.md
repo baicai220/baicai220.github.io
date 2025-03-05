@@ -1,9 +1,9 @@
 ---
 title: Redis
 tags:
-  - redis
+  - Redis
 categories:
-  - Java技术栈
+  - Redis
 date: 2025-01-31 16:44:21
 ---
 

@@ -5,5 +5,5 @@ tags:
   - 
 categories: 
   - 
-math: true
+math: false
 ---

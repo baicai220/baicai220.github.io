@@ -1,10 +1,10 @@
 ---
-title: mysql基础操作
+title: MySQL基础操作
 date: 2024-12-22 15:11:31
 tags:
-  - mysql
+  - MySQL
 categories:
-  - Java技术栈
+  - MySQL
 ---
 
 ## mysql概述

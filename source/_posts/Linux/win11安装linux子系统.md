@@ -1,11 +1,11 @@
 ---
-title: win11安装配置wsl
+title: win11安装wsl
 date: 2024-12-16 23:54:31
 tags:
-  - wsl
-  - linux
+  - WSL
+  - Linux
 categories:
-  - 机器学习
+  - Linux
 ---
 
 
