@@ -1,0 +1,16 @@
+{
+  "id": "4847417",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "34064566",
+      "name": "抖音",
+      "font_class": "douyin",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}

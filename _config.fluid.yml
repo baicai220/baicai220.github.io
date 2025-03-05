@@ -73,21 +73,18 @@ about:
   name: "光头强"
   intro: "常用链接~"
   icons:
-    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
-    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
-    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
-    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
-    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
-    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
-    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
-    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
-    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
-    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
-    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
-    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
-    - { class: 'iconfont icon-github-fill', link: 'https://github.com', tip: 'GitHub' }
-    - { class: 'iconfont icon-douban-fill', link: 'https://douban.com', tip: '豆瓣' }
-    - { class: 'iconfont icon-wechat-fill', qrcode: '/img/favicon.png' }
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com',         tip: 'GitHub' }
+    - { class: 'iconfont icon-youtube-fill', link: 'https://www.youtube.com/',  tip: 'YouTube' }
+    - { class: 'iconfont icon-bilibili-fill', link: 'https://www.bilibili.com/',  tip: 'B站' }
+    - { class: 'iconfont icon-douyin-fill', link: 'https://www.douyin.com/',    tip: '抖音' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://grok.com/?referrer=website', tip: 'Grok' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://chatgpt.com/',       tip: '' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://chat.deepseek.com/', tip: 'deepseek' }
+    - { class: 'iconfont icon-github-fill', link: 'https://tongyi.aliyun.com/qianwen/', tip: '通义千问' }
+    - { class: 'iconfont icon-douban-fill', link: 'https://kimi.moonshot.cn/', tip: 'Kimi' }
+    - { class: 'iconfont icon-github-fill', link: 'https://www.doubao.com/', tip: '豆包' }
+    - { class: 'iconfont icon-github-fill', link: 'https://simpletex.cn/ai/latex_ocr', tip: '公式识别' }
+
 
 
 
