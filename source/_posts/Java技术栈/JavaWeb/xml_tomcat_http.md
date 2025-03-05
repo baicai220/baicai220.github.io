@@ -1,10 +1,10 @@
 ---
-title: xml_tomcat_http
+title: XML_Tomcat_HTTP
 tags:
-  - xml
-  - http
-  - tomcat
-  - javaweb
+  - XML
+  - HTTP
+  - Tomcat
+  - JavaWeb
 categories:
   - Java技术栈
 date: 2024-12-27 13:39:37

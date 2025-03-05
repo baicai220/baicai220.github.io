@@ -1,5 +1,5 @@
 ---
-title: win11安装wsl
+title: win11安装linux子系统
 date: 2024-12-16 23:54:31
 tags:
   - WSL

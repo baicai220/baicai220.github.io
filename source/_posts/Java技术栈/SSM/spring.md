@@ -1,9 +1,7 @@
 ---
 title: Spring
 tags:
-  - spring
-  - ioc
-  - aop
+  - Spring
 categories:
   - Java技术栈
 date: 2025-01-15 18:59:01

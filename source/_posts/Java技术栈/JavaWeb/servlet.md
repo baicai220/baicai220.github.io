@@ -1,8 +1,8 @@
 ---
-title: servlet
+title: Servlet
 tags:
-  - javaweb
-  - servlet
+  - JavaWeb
+  - Servlet
 categories:
   - Java技术栈
 date: 2024-12-28 00:26:26

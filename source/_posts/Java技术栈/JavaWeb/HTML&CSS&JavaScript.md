@@ -1,13 +1,9 @@
 ---
-title: html&css&js
+title: HTML&CSS&JavaScript
 tags:
-  - java
-  - javaweb
-  - 前后端
-  - html
-  - css
-  - js
-  - servlet
+  - HTML
+  - CSS
+  - JavaScript
 categories:
   - Java技术栈
 date: 2024-12-24 17:54:16
