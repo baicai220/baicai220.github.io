@@ -67,6 +67,8 @@ tag:
     start_color: "#BBBBEE"
     end_color: "#337ab7"
 
+custom_css:
+  - /iconfont/douyin/iconfont.css
 
 about:
   avatar: /img/avatar.png
