@@ -2333,51 +2333,145 @@ mysqldump --single-transaction -uroot –p123456 demo > demo.sql
 语法：
 
 + 加锁：lock tables 表名... read/write。
-+ 释放锁：unlock tables / 客户端断开连接 。
++ 释放锁：unlock tables 或者 客户端断开连接 。
 
 
 
+特点：
 
++ 读锁
+
+![image-20250313231453094](MySQL进阶/image-20250313231453094.png)
+
++ 写锁
+
+![image-20250313231519845](MySQL进阶/image-20250313231519845.png)
 
 
 
 ### 元数据锁
 
+meta data lock , 元数据锁，简写MDL。
+
+MDL加锁过程是系统自动控制，无需显式使用，在访问一张表的时候会自动加上。MDL锁主要作用是维护表元数据的数据一致性，在表上有活动事务的时候，不可以对元数据进行写入操作。为了避免DML与DDL冲突，保证读写的正确性。
+
+这里的元数据，可以简单理解为就是一张表的表结构。 也就是说，某一张表涉及到未提交的事务
+时，是不能够修改这张表的表结构的。
+
+在MySQL5.5中引入了MDL，当对一张表进行增删改查的时候，加MDL读锁(共享)；当对表结构进行变更操作的时候，加MDL写锁(排他)。
+
+常见的SQL操作时，所添加的元数据锁：
+
+| 对应SQL                                        | 锁类型                                  | 说明                                             |
+| ---------------------------------------------- | --------------------------------------- | ------------------------------------------------ |
+| lock tables xxx read / write                   | SHARED_READ_ONLY / SHARED_NO_READ_WRITE |                                                  |
+| select 、select ... lock in share mode         | SHARED_READ                             | 与SHARED_READ、SHARED_WRITE兼容，与EXCLUSIVE互斥 |
+| insert 、update、delete、select ... for update | SHARED_WRITE                            | 与SHARED_READ、SHARED_WRITE兼容，与EXCLUSIVE互斥 |
+| alter table ...                                | EXCLUSIVE                               | 与其他的MDL都互斥                                |
+
+测试：
+
++ 当执行SELECT、INSERT、UPDATE、DELETE等语句时，添加的是元数据共享锁（SHARED_READ/SHARED_WRITE），之间是兼容的。
+
+![image-20250313232635124](MySQL进阶/image-20250313232635124.png)
 
 
 
++ 当执行SELECT语句时，添加的是元数据共享锁（SHARED_READ），会阻塞元数据排他锁（EXCLUSIVE），之间是互斥的。
+
+![image-20250313232652942](MySQL进阶/image-20250313232652942.png)
+
+
+
+可以通过下面的SQL，来查看数据库中的元数据锁的情况:
+
+```sql
+select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks ;
+```
 
 ### 意向锁
 
+为了避免DML在执行时，加的行锁与表锁的冲突，在InnoDB中引入了意向锁，使得表锁不用检查每行数据是否加锁，使用意向锁来减少表锁的检查。
+
+客户端一，在执行DML操作时，会对涉及的行加行锁，同时也会对该表加上意向锁；而其他客户端，在对这张表加表锁的时候，会根据该表上所加的意向锁来判定是否可以成功加表锁，而不用逐行判断行锁情况了。
+
+分类：
+
++ 意向共享锁(IS): 由语句select ... lock in share mode添加 。 与 表锁共享锁(read)兼容，与表锁排他锁(write)互斥。
++ 意向排他锁(IX): 由insert、update、delete、select...for update添加 。与表锁共享锁(read)及排他锁(write)都互斥，意向锁之间不会互斥。
+
+> 一旦事务提交了，意向共享锁、意向排他锁，都会自动释放。
 
 
 
+可以通过以下SQL，查看意向锁及行锁的加锁情况：
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```sql
+select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from
+performance_schema.data_locks;
+```
 
 
 
 ## 行级锁
 
+行级锁，每次操作锁住对应的行数据。锁定粒度最小，发生锁冲突的概率最低，并发度最高。应用在InnoDB存储引擎中。
+
+InnoDB的数据是基于索引组织的，行锁是通过对索引上的索引项加锁来实现的，而不是对记录加的锁。对于行级锁，主要分为以下三类：
+
++ 行锁（Record Lock）：锁定单个行记录的锁，防止其他事务对此行进行update和delete。在RC、RR隔离级别下都支持。
+
+![image-20250313233905392](MySQL进阶/image-20250313233905392.png)
+
++ 间隙锁（Gap Lock）：锁定索引记录间隙（不含该记录），确保索引记录间隙不变，防止其他事务在这个间隙进行insert，产生幻读。在RR隔离级别下都支持。
+
+![image-20250313233931529](MySQL进阶/image-20250313233931529.png)
+
++ 临键锁（Next-Key Lock）：行锁和间隙锁组合，同时锁住数据，并锁住数据前面的间隙Gap。
+  在RR隔离级别下支持。
+
+![image-20250313233958389](MySQL进阶/image-20250313233958389.png)
 
 
 
+### 行锁
+
+InnoDB实现了以下两种类型的行锁：
+
++ 共享锁（S）：允许一个事务去读一行，阻止其他事务获得相同数据集的排它锁。
++ 排他锁（X）：允许获取排他锁的事务更新数据，阻止其他事务获得相同数据集的共享锁和排他
+  锁。
+
+两种锁的兼容情况：
+
+![image-20250313234653578](MySQL进阶/image-20250313234653578.png)
+
+常见的SQL语句，在执行时，所加的行锁如下：
+
+| SQL                           | 行锁类型   | 说明                                     |
+| ----------------------------- | ---------- | ---------------------------------------- |
+| INSERT ...                    | 排他锁     | 自动加锁                                 |
+| UPDATE ...                    | 排他锁     | 自动加锁                                 |
+| DELETE ...                    | 排他锁     | 自动加锁                                 |
+| SELECT (正常)                 | 不加任何锁 |                                          |
+| SELECT ... LOCK IN SHARE MODE | 共享锁     | 需要手动在SELECT之后加LOCK IN SHARE MODE |
+| SELECT ... FOR UPDATE         | 排他锁     | 需要手动在SELECT之后加FOR UPDATE         |
+
+默认情况下，InnoDB在 REPEATABLE READ事务隔离级别运行，InnoDB使用 next-key 锁进行搜索和索引扫描，以防止幻读。
+
++ 针对唯一索引进行检索时，对已存在的记录进行等值匹配时，将会自动优化为行锁。
++ InnoDB的行锁是针对于索引加的锁，不通过索引条件检索数据，那么InnoDB将对表中的所有记录加锁，此时 就会升级为表锁。
+
+可以通过以下SQL，查看意向锁及行锁的加锁情况：
+
+```sql
+select object_schema,object_name,index_name,lock_type,lock_mode,lock_data from
+performance_schema.data_locks;
+```
+
+
+
+测试：
 
 
 
