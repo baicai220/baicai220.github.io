@@ -2844,53 +2844,247 @@ Serializable：快照读会退化为当前读。
 
 版本链：
 
+一张表原始数据如下：
 
+| id   | age  | name | DB_TRX_ID | DB_ROLL_PTR |
+| ---- | ---- | ---- | --------- | ----------- |
+| 30   | 30   | A30  | 1         | null        |
 
+> DB_TRX_ID : 代表最近修改事务ID，记录插入这条记录或最后一次修改该记录的事务ID，是自增的。
+>
+> DB_ROLL_PTR ： 由于这条数据是才插入的，没有被更新过，所以该字段值为null。
 
+然后，有四个并发事务同时在访问这张表：
+事务2：
 
+![image-20250327135708246](../imgs/image-20250327135708246.png)
 
+当事务2执行第一条修改语句时，会记录undo log日志，记录数据变更之前的样子; 然后更新记录，并且记录本次操作的事务ID，回滚指针，回滚指针用来指定如果发生回滚，回滚到哪一个版本。
 
+事务3：
 
+![image-20250327140352286](../imgs/image-20250327140352286.png)
 
+当事务3执行第一条修改语句时，也会记录undo log日志，记录数据变更之前的样子; 然后更新记录，并且记录本次操作的事务ID，回滚指针，回滚指针用来指定如果发生回滚，回滚到哪一个版本。
 
+事务4：
+
+![image-20250327140748934](../imgs/image-20250327140748934.png)
+
+不同事务或相同事务对同一条记录进行修改，会导致该记录的undolog生成一条记录版本链表，链表的头部是最新的旧记录，链表尾部是最早的旧记录。
 
 
 
 ### readview
 
+ReadView（读视图）是 快照读 SQL执行时MVCC提取数据的依据，记录并维护系统当前活跃的事务（未提交的）id。
+
+包含四个核心字段：
+
+| 字段           | 含义                                                 |
+| -------------- | ---------------------------------------------------- |
+| m_ids          | 当前活跃的事务ID集合                                 |
+| min_trx_id     | 最小活跃事务ID                                       |
+| max_trx_id     | 预分配事务ID，当前最大事务ID+1（因为事务ID是自增的） |
+| creator_trx_id | ReadView创建者的事务ID                               |
+
+而在readview中就规定了版本链数据的访问规则：
+
+trx_id 代表当前undolog版本链对应事务ID。
+
+| 条件                                 | 是否可以访问                                  | 说明                                       |
+| ------------------------------------ | --------------------------------------------- | ------------------------------------------ |
+| `trx_id == creator_trx_id`           | 可以访问该版本                                | 成立，说明数据是当前这个事务更改的。       |
+| `trx_id < min_trx_id`                | 可以访问该版本                                | 成立，说明数据已经提交了。                 |
+| `trx_id > max_trx_id`                | 不可以访问该版本                              | 成立，说明该事务是在ReadView生成后才开启。 |
+| `min_trx_id <= trx_id <= max_trx_id` | 如果`trx_id`不在`m_ids`中，是可以访问该版本的 | 成立，说明数据已经提交。                   |
+
+不同的隔离级别，生成ReadView的时机不同：
+
++ READ COMMITTED ：在事务中每一次执行快照读时生成ReadView。
++ REPEATABLE READ：仅在事务中第一次执行快照读时生成ReadView，后续复用该ReadView。
+
 
 
 ### 原理分析
 
+#### RC
+
+以事务5为例：
+
+![image-20250327143307900](../imgs/image-20250327143307900.png)
+
+第一次快照读：
+
+![image-20250327154321206](../imgs/image-20250327154321206.png)
+
+在进行匹配时，会从undo log的版本链，从上到下进行挨个匹配：
+
++ 先匹配DB_TRX_ID为4这行记录，将4带入右侧的匹配规则中。 ①不满足 ②不满足 ③不满足 ④也不满足 ，都不满足，则继续匹配undo log版本链的下一条。
++ 再匹配DB_TRX_ID为3这行记录，将3带入右侧的匹配规则中。①不满足 ②不满足 ③不满足 ④也不满足 ，都不满足，则继续匹配undo log版本链的下一条。
++ 再匹配DB_TRX_ID为2这行记录，将2带入右侧的匹配规则中。①不满足 ②满足 终止匹配，此次快照读，返回的数据就是版本链中记录的这条数据。
+
+第二次快照读：
+
+![image-20250327154900378](../imgs/image-20250327154900378.png)
+
++ 先匹配DB_TRX_ID为4这行记录，将4带入右侧的匹配规则中。 ①不满足 ②不满足 ③不满足 ④也不满足 ，都不满足，则继续匹配undo log版本链的下一条。
++ 再匹配DB_TRX_ID为3这行记录，将3带入右侧的匹配规则中。①不满足 ②满足 。终止匹配，此次快照读，返回的数据就是版本链中记录的这条数据。
 
 
 
+#### RR
 
+RR隔离级别下，仅在事务中第一次执行快照读时生成ReadView，后续复用该ReadView。 RR 是可重复读，在一个事务中，执行两次相同的select语句，查询到的结果是一样的。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image-20250327155200567](../imgs/image-20250327155200567.png)
 
 
 
 # MySQL管理
 
+## 系统数据库
+
+Mysql数据库安装完成后，自带了一下四个数据库，具体作用如下：
+
+| 数据库             | 含义                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| mysql              | 存储MySQL服务器正常运行所需要的各种信息（时区、主从、用户、权限等） |
+| information_schema | 提供了访问数据库元数据的各种表和视图，包含数据库、表、字段类型及访问权限等 |
+| performance_schema | 为MySQL服务器运行时状态提供了一个底层监控功能，主要用于收集数据库服务器性能参数 |
+| sys                | 包含了一系列方便DBA和开发人员利用performance_schema性能数据库进行性能调优和诊断的视图 |
 
 
 
+## 常用工具
+
+### mysql
+
+```sql
+语法 ：
+	mysql [options] [database]
+选项 ：
+	-u, --user=name #指定用户名
+	-p, --password[=name] #指定密码
+	-h, --host=name #指定服务器IP或域名
+	-P, --port=port #指定连接端口
+	-e, --execute=name #执行SQL语句并退出
+```
+
+-e选项可以在Mysql客户端执行SQL语句，而不用连接到MySQL数据库再执行，对于一些批处理脚本，这种方式尤其方便。
+
+例子：
+
+```sql
+mysql -uroot –p123456 db01 -e "1 select * from stu";
+```
+
+
+
+### mysqladmin
+
+mysqladmin 是一个执行管理操作的客户端程序。可以用它来检查服务器的配置和当前状态、创建并删除数据库等。
+
+```sql
+语法:
+	mysqladmin [options] command ...
+选项:
+	-u, --user=name #指定用户名
+	-p, --password[=name] #指定密码
+	-h, --host=name #指定服务器IP或域名
+	-P, --port=port #指定连接端口
+```
+
+例子：
+
+```sql
+mysqladmin -uroot –p1234 drop 'test01';
+mysqladmin -uroot –p1234 version;
+mysqladmin -uroot –p1234 create db02;
+```
+
+
+
+### mysqlbinlog
+
+由于服务器生成的二进制日志文件以二进制格式保存，所以如果想要检查这些文本的文本格式，就会使用到mysqlbinlog 日志管理工具。
+
+```sql
+语法 ：
+	mysqlbinlog [options] log-files1 log-files2 ...
+选项 ：
+	-d, --database=name 指定数据库名称，只列出指定的数据库相关操作。
+	-o, --offset=# 忽略掉日志中的前n行命令。
+	-r,--result-file=name 将输出的文本格式日志输出到指定文件。
+	-s, --short-form 显示简单格式， 省略掉一些信息。
+	--start-datatime=date1 --stop-datetime=date2 指定日期间隔内的所有日志。
+	--start-position=pos1 --stop-position=pos2 指定位置间隔内的所有日志。
+```
+
+
+
+### mysqlshow
+
+mysqlshow 客户端对象查找工具，用来很快地查找存在哪些数据库、数据库中的表、表中的列或者索引。
+
+```sql
+语法 ：
+	mysqlshow [options] [db_name [table_name [col_name]]]
+选项 ：
+	--count 显示数据库及表的统计信息（数据库，表 均可以不指定）
+	-i 显示指定数据库或者指定表的状态信息
+	
+示例：
+	#查询test库中每个表中的字段书，及行数
+		mysqlshow -uroot -p2143 test --count
+	#查询test库中book表的详细情况
+		mysqlshow -uroot -p2143 test book --count
+```
+
+
+
+### mysqldump
+
+mysqldump 客户端工具用来备份数据库或在不同数据库之间进行数据迁移。备份内容包含创建表，及插入表的SQL语句。
+
+```sql
+语法 ：
+	mysqldump [options] db_name [tables]
+	mysqldump [options] --database/-B db1 [db2 db3...]
+	mysqldump [options] --all-databases/-A
+连接选项 ：
+	-u, --user=name 指定用户名
+	-p, --password[=name] 指定密码
+	-h, --host=name 指定服务器ip或域名
+	-P, --port=# 指定连接端口
+输出选项：
+	--add-drop-database 在每个数据库创建语句前加上 drop database 语句
+	--add-drop-table 在每个表创建语句前加上 drop table 语句 , 默认开启 ; 不开启 (--skip-add-drop-table)
+	-n, --no-create-db 不包含数据库的创建语句
+	-t, --no-create-info 不包含数据表的创建语句
+	-d --no-data 不包含数据
+	-T, --tab=name 自动生成两个文件：一个.sql文件，创建表结构的语句；一个.txt文件，数据文件
+```
+
+
+
+### mysqlimport/source
+
+mysqlimport 是客户端数据导入工具，用来导入mysqldump 加 -T 参数后导出的文本文件。
+
+```sql
+语法 ：
+	mysqlimport [options] db_name textfile1 [textfile2...]
+示例 ：
+	mysqlimport -uroot -p2143 test /tmp/city.txt
+```
+
+
+
+如果需要导入sql文件,可以使用mysql中的source 指令 :
+
+```sql
+语法 ：
+	source /root/xxxxx.sql
+```
 
