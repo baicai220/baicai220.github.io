@@ -33,7 +33,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install pandoc
-          sudo npm install hexo-filter-mermaid-diagrams
       # Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器
       # - name: uninstall hexo-renderer-marked  
       #   run: npm uninstall hexo-renderer-marked --save
