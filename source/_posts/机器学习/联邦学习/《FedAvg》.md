@@ -1,5 +1,5 @@
 ---
-title: FedAvg
+title: 《FedAvg》
 tags:
   - 联邦学习
 categories:
@@ -7,4 +7,8 @@ categories:
 math: true
 date: 2025-04-04 00:11:51
 ---
+
+
+
+# FedAvg
 
