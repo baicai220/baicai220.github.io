@@ -6,8 +6,15 @@
         <description>Recent content on 白菜</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>白菜</copyright>
-        <lastBuildDate>Fri, 11 Apr 2025 15:10:05 +0800</lastBuildDate><atom:link href="https://baicai220.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <copyright>白菜</copyright><atom:link href="https://baicai220.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Hugo博客搭建</title>
+        <link>https://baicai220.github.io/p/hugo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+        <pubDate>Fri, 11 Apr 2025 21:20:27 +0800</pubDate>
+        
+        <guid>https://baicai220.github.io/p/hugo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Fed_Avg</title>
         <link>https://baicai220.github.io/p/fed_avg/</link>
         <pubDate>Fri, 11 Apr 2025 15:10:05 +0800</pubDate>
@@ -19,7 +26,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[1] Mcmahan H B , Moore E , Ramage D ,et al.Communication-Efficient Learning of Deep Networks from Decentralized Data[J].  2016.DOI:10.48550/arXiv.1602.05629.  
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Mcmahan H B , Moore E , Ramage D ,et al.Communication-Efficient Learning of Deep Networks from Decentralized Data[J].  2016.DOI:10.48550/arXiv.1602.05629.  
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;算法原理&#34;&gt;算法原理
@@ -51,7 +58,15 @@ $$ w_{t+1} \leftarrow \sum_{k = 1}^{K} \frac{n_k}{n} w_{t + 1}^k $$&lt;p&gt; 	//
 &lt;p&gt;当$E = 1\ B = \infty$时，对应的就是FedSGD，即每一轮客户机一次性将所有本地数据投入训练，更新模型参数。&lt;/p&gt;
 &lt;p&gt;对于一个有着$n_k$个本地样本的客户机$k$来说，每轮的本地更新次数为$u_k = E \cdot \frac{n_k}{B}$。&lt;/p&gt;
 &lt;h2 id=&#34;实验&#34;&gt;实验
-&lt;/h2&gt;</description>
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
         </item>
         <item>
         <title>归档</title>
