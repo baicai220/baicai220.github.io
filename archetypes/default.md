@@ -5,9 +5,11 @@ date: {{ .Date }}
 image: 
 math: true
 mermaid: true
-license: 
+license: false
 hidden: false
 comments: false
 draft: false
+categories:
+    - 
 ---
 
