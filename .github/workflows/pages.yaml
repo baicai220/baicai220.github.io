@@ -29,6 +29,6 @@ jobs:
           with:
               PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
               EXTERNAL_REPOSITORY: baicai220/baicai220.github.io
-              PUBLISH_BRANCH: main
+              PUBLISH_BRANCH: gh-pages  # 修改为 gh-pages 分支
               PUBLISH_DIR: ./public
-              commit_message: auto deploy
+              commit_message: auto deploy    
