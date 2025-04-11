@@ -1,6 +1,6 @@
 ---
 title: "Fed_Avg"
-description: 
+description: 读论文《Communication-Efficient Learning of Deep Networks from Decentralized Data》  
 date: 2025-04-11T15:10:05+08:00
 image: 
 math: true
@@ -16,7 +16,7 @@ draft: false
 # Fed_Avg
 
 ```txt
-[1] Mcmahan H B , Moore E , Ramage D ,et al.Communication-Efficient Learning of Deep Networks from Decentralized Data[J].  2016.DOI:10.48550/arXiv.1602.05629.  
+Mcmahan H B , Moore E , Ramage D ,et al.Communication-Efficient Learning of Deep Networks from Decentralized Data[J].  2016.DOI:10.48550/arXiv.1602.05629.  
 ```
 
 
