@@ -58,7 +58,7 @@ params:
 
     dateFormat:
         published: 2006-01-02
-        lastUpdated: Jan 02, 2006 15:04 MST
+        lastUpdated: 2006-01-02 15:04:05
 
     sidebar:
         emoji: 🥰
@@ -263,3 +263,13 @@ markup:
         lineNos: true
         lineNumbersInTable: true
         tabWidth: 4
+
+# 修改时间
+# 更新时间：优先读取git时间 -> git时间不存在，就读取本地文件修改时间
+frontmatter:
+  lastmod:
+    - :git
+    - :fileModTime
+
+# 允许获取Git信息		
+enableGitInfo: true

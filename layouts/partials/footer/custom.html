@@ -1,0 +1,154 @@
+<!-- 背景 -->
+
+<div id="particles-js"></div>
+
+<script src={{ (resources.Get "background/particles.min.js").Permalink }}></script>
+<script>
+  particlesJS.load('particles-js', {{ (resources.Get "background/particlesjs-config.json").Permalink }}, function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+<!-- 返回顶部 -->
+<style>
+  #backTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      z-index: 99;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      background-image: url({{ (resources.Get "icons/backTop.svg").Permalink }});
+  }
+</style>
+
+<script>
+  /**
+   * 滚动回顶部初始化
+   */
+  function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+          return;
+      }
+      // 添加返回顶部按钮到右侧边栏
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      // 滚动监听
+      window.onscroll = function() {
+          // 当网页向下滑动 20px 出现"返回顶部" 按钮
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+              btn.style.display = "block";
+          } else {
+              btn.style.display = "none";
+          }
+      };
+  }
+
+  /**
+   * 返回顶部
+   */
+  function backToTop(){
+      window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  initScrollTop();
+</script>
+
+
+
+<!-- 代码块折叠 -->
+<style>
+  .highlight {
+      /* 你可以根据需要调整这个高度 */
+      max-height: 400px;
+      overflow: hidden;
+  }
+
+  .code-show {
+      max-height: none !important;
+  }
+
+  .code-more-box {
+      width: 100%;
+      padding-top: 78px;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+  }
+
+  .code-more-btn {
+      display: block;
+      margin: auto;
+      width: 44px;
+      height: 22px;
+      background: #f0f0f5;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      padding-top: 6px;
+      cursor: pointer;
+  }
+
+  .code-more-img {
+      cursor: pointer !important;
+      display: block;
+      margin: auto;
+      width: 22px;
+      height: 16px;
+  }
+</style>
+
+<script>
+function initCodeMoreBox() {
+  let codeBlocks = document.querySelectorAll(".highlight");
+  if (!codeBlocks) {
+    return;
+  }
+  codeBlocks.forEach(codeBlock => {
+    // 校验是否overflow
+    if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+      return;
+    }
+    // 元素初始化
+    // codeMoreBox
+    let codeMoreBox = document.createElement('div');
+    codeMoreBox.classList.add('code-more-box');
+    // codeMoreBtn
+    let codeMoreBtn = document.createElement('span');
+    codeMoreBtn.classList.add('code-more-btn');
+    codeMoreBtn.addEventListener('click', () => {
+      codeBlock.classList.add('code-show');
+      codeMoreBox.style.display = 'none';
+      // 触发resize事件，重新计算目录位置
+      window.dispatchEvent(new Event('resize'))
+    })
+    // img
+    let img = document.createElement('img');
+    img.classList.add('code-more-img');
+    img.src = {{ (resources.Get "icons/codeMore.png").Permalink }}
+    // 元素添加
+    codeMoreBtn.appendChild(img);
+    codeMoreBox.appendChild(codeMoreBtn);
+    codeBlock.appendChild(codeMoreBox)
+  })
+}
+
+initCodeMoreBox();
+</script>
