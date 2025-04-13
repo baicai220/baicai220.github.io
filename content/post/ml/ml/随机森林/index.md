@@ -1,20 +1,19 @@
 ---
-title: "集成学习---Bagging之随机森林（RF）"
+title: "随机森林"
 description: 
-date: 2025-04-13T15:10:05+08:00
+date: 2025-04-14T01:05:15+08:00
 image: 
 math: true
 mermaid: true
-license: 
+license: false
 hidden: false
 comments: false
 draft: false
 categories:
     - 机器学习
-    - 随机森林
 ---
 
-# 集成学习---Bagging之随机森林（RF）
+# 集成学习---Bagging之随机森林RF
 
 ## 集成学习
 
@@ -37,6 +36,8 @@ categories:
 ### Bagging基本思想
 
 ![image-20250405134855856](image-20250405134855856.png)
+
+
 
 1. Bagging的特点 “随机采样”。随机采集跟训练集个数m相同的样本，采集T次。得到采样集。(GBDT(Gradient Boosted Decision Tree)的子采样是无放回采样，而Bagging的子采样是放回采样。)
 
