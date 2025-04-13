@@ -165,13 +165,13 @@ params:
             - type: search
             - type: archives
               params:
-                  limit: 5
+                  limit: 6
             - type: categories
               params:
-                  limit: 10
+                  limit: 100
             - type: tag-cloud
               params:
-                  limit: 10
+                  limit: 100
         page:
             - type: toc
 

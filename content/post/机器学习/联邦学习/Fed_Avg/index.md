@@ -11,6 +11,7 @@ comments: false
 draft: false
 categories:
     - 联邦学习
+tags: ["横向联邦学习"]
 ---
 
 
