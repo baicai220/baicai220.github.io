@@ -7,12 +7,12 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>白菜</copyright><atom:link href="https://baicai220.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>集成学习---Bagging之随机森林（RF）</title>
-        <link>https://baicai220.github.io/p/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0---bagging%E4%B9%8B%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97rf/</link>
-        <pubDate>Sun, 13 Apr 2025 15:10:05 +0800</pubDate>
+        <title>随机森林</title>
+        <link>https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/</link>
+        <pubDate>Mon, 14 Apr 2025 01:05:15 +0800</pubDate>
         
-        <guid>https://baicai220.github.io/p/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0---bagging%E4%B9%8B%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97rf/</guid>
-        <description>&lt;h1 id=&#34;集成学习bagging之随机森林rf&#34;&gt;集成学习&amp;mdash;Bagging之随机森林（RF）
+        <guid>https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/</guid>
+        <description>&lt;h1 id=&#34;集成学习bagging之随机森林rf&#34;&gt;集成学习&amp;mdash;Bagging之随机森林RF
 &lt;/h1&gt;&lt;h2 id=&#34;集成学习&#34;&gt;集成学习
 &lt;/h2&gt;&lt;p&gt;在机器学习的广袤领域中，集成学习是一种强大且灵活的策略，它通过将多个单独的学习器（或称为“基学习器”）组合起来，形成一个更加强大的学习器，以提升模型的预测性能。集成学习的核心思想在于“集体智慧”的力量，即多个学习器的联合决策通常会比单一学习器的决策更为准确和稳健。&lt;/p&gt;
 &lt;p&gt;集成学习的重要性在于它能够有效解决单一学习器可能存在的过拟合、欠拟合、稳定性差等问题。通过将多个基学习器的预测结果进行综合，集成学习不仅能够提高预测精度，还能增强模型的鲁棒性和泛化能力。此外，集成学习还能够利用不同基学习器之间的差异性，捕捉到数据中的更多信息，从而进一步提升预测性能。&lt;/p&gt;
@@ -21,14 +21,18 @@
 &lt;/h3&gt;&lt;p&gt;随机森林（Random Forest，简称RF）则是Bagging算法的一个典型应用。随机森林以决策树作为基学习器，并在构建每棵决策树时引入了额外的随机性。具体来说，随机森林在构建决策树时不仅使用自助法采样生成不同的训练子集，还会在每个节点分裂时随机选择一部分特征进行考虑。这种随机性的引入进一步增加了基学习器之间的差异性，使得随机森林能够取得更好的预测性能。&lt;/p&gt;
 &lt;h2 id=&#34;rf原理&#34;&gt;RF原理
 &lt;/h2&gt;&lt;h3 id=&#34;bagging基本思想&#34;&gt;Bagging基本思想
-&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://baicai220.github.io/image-20250405134855856.png&#34;
-	
-	
-	
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/image-20250405134855856.png&#34;
+	width=&#34;753&#34;
+	height=&#34;344&#34;
+	srcset=&#34;https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/image-20250405134855856_hu_7bb336ab0be2c952.png 480w, https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/image-20250405134855856_hu_c702e4784f381a32.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250405134855856&#34;
 	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;218&#34;
+		data-flex-basis=&#34;525px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;ol&gt;
@@ -274,14 +278,18 @@ $$&lt;p&gt;​	也就是说bagging的每轮随机采样中，训练集大约有3
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. feature 1 (0.025106)
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://baicai220.github.io/image-20250405141137963.png&#34;
-	
-	
-	
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/image-20250405141137963.png&#34;
+	width=&#34;1200&#34;
+	height=&#34;600&#34;
+	srcset=&#34;https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/image-20250405141137963_hu_ba8c0bacc0c941ac.png 480w, https://baicai220.github.io/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/image-20250405141137963_hu_a118340030e568f0.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250405141137963&#34;
 	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;200&#34;
+		data-flex-basis=&#34;480px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考
