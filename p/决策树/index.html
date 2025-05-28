@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=12563&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="决策树 一种通过树形结构进行决策分析的分类方法\n信息熵和条件熵 熵帮助我们度量数据的混乱程度或不确定性，从而指导如何选择最优的划分属性。\n信息熵的理解 信息熵是对数据集中不确定性或混乱程度的度量。在一个数据集中，如果各类别的样本数量大致相等，那么该数据集的熵值较高，表示不确定性较大；反之，如果某个类别的样本数量占据绝对优势，那么熵值较低，表示不确定性较小。因此，信息熵可以用来评估数据集的纯度。\n">
+<title>决策树</title>
+
+<link rel='canonical' href='http://localhost:12563/p/%E5%86%B3%E7%AD%96%E6%A0%91/'>
+
+<link rel="stylesheet" href="/scss/style.min.bb8bb1a62721e41762f4725a6e9bca6862b48b435802245de05e996d34f2a0f3.css"><meta property='og:title' content="决策树">
+<meta property='og:description' content="决策树 一种通过树形结构进行决策分析的分类方法\n信息熵和条件熵 熵帮助我们度量数据的混乱程度或不确定性，从而指导如何选择最优的划分属性。\n信息熵的理解 信息熵是对数据集中不确定性或混乱程度的度量。在一个数据集中，如果各类别的样本数量大致相等，那么该数据集的熵值较高，表示不确定性较大；反之，如果某个类别的样本数量占据绝对优势，那么熵值较低，表示不确定性较小。因此，信息熵可以用来评估数据集的纯度。\n">
+<meta property='og:url' content='http://localhost:12563/p/%E5%86%B3%E7%AD%96%E6%A0%91/'>
+<meta property='og:site_name' content='白菜'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='决策树' /><meta property='article:tag' content='信息熵' /><meta property='article:published_time' content='2025-04-14T01:05:15&#43;08:00'/><meta property='article:modified_time' content='2025-04-29T11:41:32&#43;08:00'/><meta property='og:image' content='http://localhost:12563/' />
+<meta name="twitter:title" content="决策树">
+<meta name="twitter:description" content="决策树 一种通过树形结构进行决策分析的分类方法\n信息熵和条件熵 熵帮助我们度量数据的混乱程度或不确定性，从而指导如何选择最优的划分属性。\n信息熵的理解 信息熵是对数据集中不确定性或混乱程度的度量。在一个数据集中，如果各类别的样本数量大致相等，那么该数据集的熵值较高，表示不确定性较大；反之，如果某个类别的样本数量占据绝对优势，那么熵值较低，表示不确定性较小。因此，信息熵可以用来评估数据集的纯度。\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='http://localhost:12563/' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<div class="loading">
+    
+      
+<div aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+	<div class="wheel"></div>
+	<div class="hamster">
+		<div class="hamster__body">
+			<div class="hamster__head">
+				<div class="hamster__ear"></div>
+				<div class="hamster__eye"></div>
+				<div class="hamster__nose"></div>
+			</div>
+			<div class="hamster__limb hamster__limb--fr"></div>
+			<div class="hamster__limb hamster__limb--fl"></div>
+			<div class="hamster__limb hamster__limb--br"></div>
+			<div class="hamster__limb hamster__limb--bl"></div>
+			<div class="hamster__tail"></div>
+		</div>
+	</div>
+	<div class="spoke"></div>
+</div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        background-color: #f5f5fa;
+    }
+
+      
+.wheel-and-hamster {
+  --dur: 1s;
+  position: relative;
+  width: 12em;
+  height: 12em;
+  font-size: 14px;
+}
+
+.wheel,
+.hamster,
+.hamster div,
+.spoke {
+  position: absolute;
+}
+
+.wheel,
+.spoke {
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.wheel {
+  background: radial-gradient(100% 100% at center,hsla(0,0%,60%,0) 47.8%,hsl(0,0%,60%) 48%);
+  z-index: 2;
+}
+
+.hamster {
+  animation: hamster var(--dur) ease-in-out infinite;
+  top: 50%;
+  left: calc(50% - 3.5em);
+  width: 7em;
+  height: 3.75em;
+  transform: rotate(4deg) translate(-0.8em,1.85em);
+  transform-origin: 50% 0;
+  z-index: 1;
+}
+
+.hamster__head {
+  animation: hamsterHead var(--dur) ease-in-out infinite;
+  background: hsl(30,90%,55%);
+  border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
+  box-shadow: 0 -0.25em 0 hsl(30,90%,80%) inset,
+		0.75em -1.55em 0 hsl(30,90%,90%) inset;
+  top: 0;
+  left: -2em;
+  width: 2.75em;
+  height: 2.5em;
+  transform-origin: 100% 50%;
+}
+
+.hamster__ear {
+  animation: hamsterEar var(--dur) ease-in-out infinite;
+  background: hsl(0,90%,85%);
+  border-radius: 50%;
+  box-shadow: -0.25em 0 hsl(30,90%,55%) inset;
+  top: -0.25em;
+  right: -0.25em;
+  width: 0.75em;
+  height: 0.75em;
+  transform-origin: 50% 75%;
+}
+
+.hamster__eye {
+  animation: hamsterEye var(--dur) linear infinite;
+  background-color: hsl(0,0%,0%);
+  border-radius: 50%;
+  top: 0.375em;
+  left: 1.25em;
+  width: 0.5em;
+  height: 0.5em;
+}
+
+.hamster__nose {
+  background: hsl(0,90%,75%);
+  border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
+  top: 0.75em;
+  left: 0;
+  width: 0.2em;
+  height: 0.25em;
+}
+
+.hamster__body {
+  animation: hamsterBody var(--dur) ease-in-out infinite;
+  background: hsl(30,90%,90%);
+  border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
+  box-shadow: 0.1em 0.75em 0 hsl(30,90%,55%) inset,
+		0.15em -0.5em 0 hsl(30,90%,80%) inset;
+  top: 0.25em;
+  left: 2em;
+  width: 4.5em;
+  height: 3em;
+  transform-origin: 17% 50%;
+  transform-style: preserve-3d;
+}
+
+.hamster__limb--fr,
+.hamster__limb--fl {
+  clip-path: polygon(0 0,100% 0,70% 80%,60% 100%,0% 100%,40% 80%);
+  top: 2em;
+  left: 0.5em;
+  width: 1em;
+  height: 1.5em;
+  transform-origin: 50% 0;
+}
+
+.hamster__limb--fr {
+  animation: hamsterFRLimb var(--dur) linear infinite;
+  background: linear-gradient(hsl(30,90%,80%) 80%,hsl(0,90%,75%) 80%);
+  transform: rotate(15deg) translateZ(-1px);
+}
+
+.hamster__limb--fl {
+  animation: hamsterFLLimb var(--dur) linear infinite;
+  background: linear-gradient(hsl(30,90%,90%) 80%,hsl(0,90%,85%) 80%);
+  transform: rotate(15deg);
+}
+
+.hamster__limb--br,
+.hamster__limb--bl {
+  border-radius: 0.75em 0.75em 0 0;
+  clip-path: polygon(0 0,100% 0,100% 30%,70% 90%,70% 100%,30% 100%,40% 90%,0% 30%);
+  top: 1em;
+  left: 2.8em;
+  width: 1.5em;
+  height: 2.5em;
+  transform-origin: 50% 30%;
+}
+
+.hamster__limb--br {
+  animation: hamsterBRLimb var(--dur) linear infinite;
+  background: linear-gradient(hsl(30,90%,80%) 90%,hsl(0,90%,75%) 90%);
+  transform: rotate(-25deg) translateZ(-1px);
+}
+
+.hamster__limb--bl {
+  animation: hamsterBLLimb var(--dur) linear infinite;
+  background: linear-gradient(hsl(30,90%,90%) 90%,hsl(0,90%,85%) 90%);
+  transform: rotate(-25deg);
+}
+
+.hamster__tail {
+  animation: hamsterTail var(--dur) linear infinite;
+  background: hsl(0,90%,85%);
+  border-radius: 0.25em 50% 50% 0.25em;
+  box-shadow: 0 -0.2em 0 hsl(0,90%,75%) inset;
+  top: 1.5em;
+  right: -0.5em;
+  width: 1em;
+  height: 0.5em;
+  transform: rotate(30deg) translateZ(-1px);
+  transform-origin: 0.25em 0.25em;
+}
+
+.spoke {
+  animation: spoke var(--dur) linear infinite;
+  background: radial-gradient(100% 100% at center,hsl(0,0%,60%) 4.8%,hsla(0,0%,60%,0) 5%),
+		linear-gradient(hsla(0,0%,55%,0) 46.9%,hsl(0,0%,65%) 47% 52.9%,hsla(0,0%,65%,0) 53%) 50% 50% / 99% 99% no-repeat;
+}
+
+ 
+@keyframes hamster {
+  from, to {
+    transform: rotate(4deg) translate(-0.8em,1.85em);
+  }
+
+  50% {
+    transform: rotate(0) translate(-0.8em,1.85em);
+  }
+}
+
+@keyframes hamsterHead {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(0);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes hamsterEye {
+  from, 90%, to {
+    transform: scaleY(1);
+  }
+
+  95% {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes hamsterEar {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(0);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes hamsterBody {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(0);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes hamsterFRLimb {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(50deg) translateZ(-1px);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(-30deg) translateZ(-1px);
+  }
+}
+
+@keyframes hamsterFLLimb {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(-30deg);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(50deg);
+  }
+}
+
+@keyframes hamsterBRLimb {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(-60deg) translateZ(-1px);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(20deg) translateZ(-1px);
+  }
+}
+
+@keyframes hamsterBLLimb {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(20deg);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(-60deg);
+  }
+}
+
+@keyframes hamsterTail {
+  from, 25%, 50%, 75%, to {
+    transform: rotate(30deg) translateZ(-1px);
+  }
+
+  12.5%, 37.5%, 62.5%, 87.5% {
+    transform: rotate(10deg) translateZ(-1px);
+  }
+}
+
+@keyframes spoke {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(-1turn);
+  }
+}
+	
+     
+</style>
+
+<script>	
+    function initLoading() {
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            loading.style.display = "none";
+        });
+    }
+
+    initLoading();
+</script>
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_59fbed6258e1bf3f.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🥰</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">白菜</a></h1>
+            <h2 class="site-description">我的技校进不去她的大学</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/baicai220'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1744303843793" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2352" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M512 85.333333C276.266667 85.333333 85.333333 276.266667 85.333333 512a426.410667 426.410667 0 0 0 291.754667 404.821333c21.333333 3.712 29.312-9.088 29.312-20.309333 0-10.112-0.554667-43.690667-0.554667-79.445333-107.178667 19.754667-134.912-26.112-143.445333-50.133334-4.821333-12.288-25.6-50.133333-43.733333-60.288-14.933333-7.978667-36.266667-27.733333-0.554667-28.245333 33.621333-0.554667 57.6 30.933333 65.621333 43.733333 38.4 64.512 99.754667 46.378667 124.245334 35.2 3.754667-27.733333 14.933333-46.378667 27.221333-57.045333-94.933333-10.666667-194.133333-47.488-194.133333-210.688 0-46.421333 16.512-84.778667 43.733333-114.688-4.266667-10.666667-19.2-54.4 4.266667-113.066667 0 0 35.712-11.178667 117.333333 43.776a395.946667 395.946667 0 0 1 106.666667-14.421333c36.266667 0 72.533333 4.778667 106.666666 14.378667 81.578667-55.466667 117.333333-43.690667 117.333334-43.690667 23.466667 58.666667 8.533333 102.4 4.266666 113.066667 27.178667 29.866667 43.733333 67.712 43.733334 114.645333 0 163.754667-99.712 200.021333-194.645334 210.688 15.445333 13.312 28.8 38.912 28.8 78.933333 0 57.045333-0.554667 102.912-0.554666 117.333334 0 11.178667 8.021333 24.490667 29.354666 20.224A427.349333 427.349333 0 0 0 938.666667 512c0-235.733333-190.933333-426.666667-426.666667-426.666667z" fill="#000000" p-id="2353"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.douyin.com/user/MS4wLjABAAAAxM8r6IsKs8TucmP-Pn_h4x2PF_E_c2glAbcLltgFgKSYWpF6cNjyv7bWpvZNIs-M?from_tab_name=main'
+                        target="_blank"
+                        title="抖音"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1744303653635" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6083" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M937.4 423.9c-84 0-165.7-27.3-232.9-77.8v352.3c0 179.9-138.6 325.6-309.6 325.6S85.3 878.3 85.3 698.4c0-179.9 138.6-325.6 309.6-325.6 17.1 0 33.7 1.5 49.9 4.3v186.6c-15.5-6.1-32-9.2-48.6-9.2-76.3 0-138.2 65-138.2 145.3 0 80.2 61.9 145.3 138.2 145.3 76.2 0 138.1-65.1 138.1-145.3V0H707c0 134.5 103.7 243.5 231.6 243.5v180.3l-1.2 0.1" p-id="6084"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>技术链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息熵和条件熵">信息熵和条件熵</a>
+      <ol>
+        <li><a href="#信息熵的理解">信息熵的理解</a></li>
+        <li><a href="#条件熵">条件熵</a></li>
+        <li><a href="#经典的决策树算法">经典的决策树算法</a></li>
+      </ol>
+    </li>
+    <li><a href="#id3">ID3</a>
+      <ol>
+        <li><a href="#计算经验熵">计算经验熵</a></li>
+        <li><a href="#计算信息增益">计算信息增益</a></li>
+        <li><a href="#树的生成">树的生成</a></li>
+        <li><a href="#完整代码">完整代码</a></li>
+        <li><a href="#id3优缺点">ID3优缺点</a></li>
+      </ol>
+    </li>
+    <li><a href="#c45">C4.5</a>
+      <ol>
+        <li><a href="#信息增益率">信息增益率</a></li>
+        <li><a href="#剪枝">剪枝</a></li>
+        <li><a href="#id3c45">ID3&amp;C4.5</a></li>
+      </ol>
+    </li>
+    <li><a href="#cart">CART</a>
+      <ol>
+        <li><a href="#cart树">CART树</a></li>
+        <li><a href="#分类树划分选择gini系数">分类树划分选择—Gini系数</a></li>
+        <li><a href="#回归树划分选择loss函数">回归树划分选择—loss函数</a></li>
+        <li><a href="#cart优缺点">CART优缺点</a></li>
+        <li><a href="#对连续型属性的处理">对连续型属性的处理</a></li>
+      </ol>
+    </li>
+    <li><a href="#分类案例">分类案例</a></li>
+    <li><a href="#回归案例">回归案例</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" >
+                机器学习
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-04-14</time>
+            </div>
+        
+
+        
+
+               <div class="article-lastmod">
+                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                   <time>
+                       2025-04-29 11:41:32
+                   </time>
+               </div></footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="决策树">决策树
+</h1><p>一种通过树形结构进行决策分析的分类方法</p>
+<h2 id="信息熵和条件熵">信息熵和条件熵
+</h2><p>熵帮助我们度量数据的混乱程度或不确定性，从而指导如何选择最优的划分属性。</p>
+<h3 id="信息熵的理解">信息熵的理解
+</h3><p>信息熵是对数据集中不确定性或混乱程度的度量。在一个数据集中，如果各类别的样本数量大致相等，那么该数据集的熵值较高，表示不确定性较大；反之，如果某个类别的样本数量占据绝对优势，那么熵值较低，表示不确定性较小。因此，信息熵可以用来评估数据集的纯度。</p>
+<p>设X是一个有限值的离散随机变量，其概率分布为：$ P(X = x_i)=p_i, i = 1,2,\cdots,n $</p>
+$$
+H(X)=-\sum_{i = 1}^{n}p_i\log_2 p_i
+$$<p>
+假设有一个抛硬币的随机事件，其中正面朝上的概率为$ P(\text{正面}) = 0.5 $，反面朝上的概率为$P(\text{反面}) = 0.5$。那么，这个随机事件的信息熵为：</p>
+$$
+H(\text{硬币}) = -(0.5 * \log_2(0.5) + 0.5 * \log_2(0.5)) = -(0.5 * (-1) + 0.5 * (-1)) = 1
+$$<p>
+信息熵为1表示这个随机事件的不确定性为1，也就是说，我们无法确定硬币的哪一面会朝上，因为正面和反面的概率都是0.5。</p>
+<h3 id="条件熵">条件熵
+</h3><p>条件熵是在给定某个随机变量取值的情况下，另一个随机变量的不确定性度量。在决策树中，条件熵用于评估在给定某个特征条件下数据集的纯度。通过比较划分前后数据集的条件熵变化，我们可以选择出能够最大程度降低不确定性的划分属性。</p>
+<p>条件熵（Conditional Entropy）表示在已知某一随机变量$Y$的条件下，另一随机变量$X$的不确定性。其公式为：</p>
+$$
+H(X|Y)=\sum P(y) * H(X|y)=\sum P(y) * [-\sum P(x|y) * \log_2 P(x|y)]
+$$<p>
+其中，$P(y)$表示随机变量$Y$取值为$y$的概率，$P(x|y)$表示在$Y$取值为$y$的条件下，$X$取值为$x$的条件概率。</p>
+<p>假设有一个天气和穿衣的随机事件。其中，天气有两种状态：晴天和雨天，记为W = {晴, 雨}；穿衣有三种选择：短袖、长袖和雨衣，记为C = {短袖, 长袖, 雨衣}。我们关心的是，在知道天气的情况下，穿衣选择的不确定性是多少。</p>
+<p>假设已知：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">P(W=晴) = 0.6, P(W=雨) = 0.4
+</span></span><span class="line"><span class="cl">P(C=短袖|W=晴) = 0.8, P(C=长袖|W=晴) = 0.1, P(C=雨衣|W=晴) = 0.1
+</span></span><span class="line"><span class="cl">P(C=短袖|W=雨) = 0.1, P(C=长袖|W=雨) = 0.2, P(C=雨衣|W=雨) = 0.7
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以计算条件熵H(C|W)。这里需要分别计算晴天和雨天下的条件熵，然后按照天气的概率加权求和。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">H(C|W=晴) = - (0.8 * log2(0.8) + 0.1 * log2(0.1) + 0.1 * log2(0.1))
+</span></span><span class="line"><span class="cl">H(C|W=雨) = - (0.1 * log2(0.1) + 0.2 * log2(0.2) + 0.7 * log2(0.7))
+</span></span><span class="line"><span class="cl">H(C|W) = 0.6 * H(C|W=晴) + 0.4 * H(C|W=雨)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>条件熵H(C|W)表示在知道天气的条件下，穿衣选择的不确定性。这个值会比不考虑天气时的信息熵H要小，因为天气信息提供了关于穿衣选择的额外信息。</p>
+<h3 id="经典的决策树算法">经典的决策树算法
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>算法</th>
+          <th>支持模型</th>
+          <th>树结构</th>
+          <th>特征选择</th>
+          <th>连续值处理</th>
+          <th>缺失值处理</th>
+          <th>剪枝</th>
+          <th>特征属性多次使用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>ID3</td>
+          <td>分类</td>
+          <td>多叉树</td>
+          <td><strong>信息增益</strong></td>
+          <td>不支持</td>
+          <td>不支持</td>
+          <td>不支持</td>
+          <td>不支持</td>
+      </tr>
+      <tr>
+          <td>C4.5</td>
+          <td>分类</td>
+          <td>多叉树</td>
+          <td><strong>信息增益率</strong></td>
+          <td>支持</td>
+          <td>支持</td>
+          <td>支持</td>
+          <td>不支持</td>
+      </tr>
+      <tr>
+          <td>CART</td>
+          <td>分类、回归</td>
+          <td>二叉树</td>
+          <td><strong>基尼指数、均方差</strong></td>
+          <td>支持</td>
+          <td>支持</td>
+          <td>支持</td>
+          <td>支持</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>ID3算法采用信息增益作为划分标准，它选择信息增益最大的属性作为划分属性。然而，ID3算法倾向于选择取值较多的属性进行划分，可能导致过拟合问题。</p>
+<p>C4.5算法是ID3算法的改进版，它采用信息增益率作为划分标准，克服了ID3算法中信息增益偏向选择取值较多的属性的缺点。此外，C4.5算法还增加了剪枝操作，进一步提高了模型的泛化能力。</p>
+<p>CART算法则采用Gini系数作为划分标准，既可以用于分类问题也可以用于回归问题。CART算法生成的决策树是二叉树，每个非叶节点只有两个分支，因此更加简洁易懂。</p>
+<h2 id="id3">ID3
+</h2>$$
+\text{Gain}(S,A) = E(S) - E(S,A) 
+$$<p>
+下面将使用贷款申请样本的数据表来进行具体说明，数据示例如下：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>年龄</th>
+          <th>有工作</th>
+          <th>有自己的房子</th>
+          <th>信贷情况</th>
+          <th>类别</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>青年</td>
+          <td>否</td>
+          <td>否</td>
+          <td>一般</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>青年</td>
+          <td>否</td>
+          <td>否</td>
+          <td>好</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>青年</td>
+          <td>是</td>
+          <td>否</td>
+          <td>好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>青年</td>
+          <td>是</td>
+          <td>否</td>
+          <td>一般</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>青年</td>
+          <td>否</td>
+          <td>否</td>
+          <td>一般</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>中年</td>
+          <td>否</td>
+          <td>否</td>
+          <td>一般</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>中年</td>
+          <td>否</td>
+          <td>否</td>
+          <td>好</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>中年</td>
+          <td>是</td>
+          <td>是</td>
+          <td>好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>中年</td>
+          <td>否</td>
+          <td>是</td>
+          <td>非常好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>中年</td>
+          <td>否</td>
+          <td>是</td>
+          <td>非常好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>老年</td>
+          <td>否</td>
+          <td>是</td>
+          <td>非常好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>12</td>
+          <td>老年</td>
+          <td>否</td>
+          <td>是</td>
+          <td>好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>13</td>
+          <td>老年</td>
+          <td>是</td>
+          <td>否</td>
+          <td>好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>14</td>
+          <td>老年</td>
+          <td>是</td>
+          <td>否</td>
+          <td>非常好</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>15</td>
+          <td>老年</td>
+          <td>否</td>
+          <td>否</td>
+          <td>一般</td>
+          <td>否</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>先对数据集进行属性标注。</p>
+<ul>
+<li>年龄：{“青年”:0, “中年”:1, “老年”:2}</li>
+<li>有工作： {“否”:0, “是”:1}</li>
+<li>有自己的房子： {“否”:0, “是”:1}</li>
+<li>信贷情况： {“一般”:0, “好”:1, “非常好”:2}</li>
+<li>类别（是否给贷款）： {“否”:no, “是”:yes}</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 数据集</span>
+</span></span><span class="line"><span class="cl"><span class="n">dataSet</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl"><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;年龄&#39;</span><span class="p">,</span><span class="s1">&#39;有工作&#39;</span><span class="p">,</span><span class="s1">&#39;有自己的房子&#39;</span><span class="p">,</span><span class="s1">&#39;信贷情况&#39;</span><span class="p">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="计算经验熵">计算经验熵
+</h3><p>经验熵（香农熵）用于度量数据集的纯度或不确定性。对于包含K个类别的数据集D，其经验熵H(D)的计算公式如下：</p>
+$$
+H(D)=-\sum (P(D_i)*\log_2 P(D_i))
+$$<p>
+其中，$P(D_i)$表示数据集D中第i个类别样本所占的比例，$\sum$表示对所有类别求和。经验熵越小，说明数据集的纯度越高。</p>
+<h3 id="计算信息增益">计算信息增益
+</h3><p>信息增益表示划分前后数据集信息熵的差值。对于属性A，其在数据集D上的信息增益$\text{Gain}(D,A)$的计算公式如下：</p>
+$$
+\text{Gain}(D,A)=H(D)-\sum(|D_v|/|D|*H(D_v))
+$$<p>
+其中，$D_v$表示根据属性A的某个取值将数据集D划分得到的子集，$|D_v|$表示子集$D_v$的样本数，$|D|$表示数据集$D$的样本总数。信息增益越大，说明使用属性A进行划分所获得的“纯度提升”越大。</p>
+<h3 id="树的生成">树的生成
+</h3><ol>
+<li>从根节点开始，计算所有属性的信息增益。</li>
+<li>选择信息增益最大的属性作为划分属性，根据该属性的不同取值将数据集划分为多个子集。</li>
+<li>对每个子集递归执行步骤1和步骤2，直到满足停止条件（如所有样本属于同一类别或没有属性可用）为止。</li>
+<li>通过上述步骤，可以得到一个完整的决策树。</li>
+</ol>
+<h3 id="完整代码">完整代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">operator</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pickle</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">calcShannonEnt</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 统计数据数量</span>
+</span></span><span class="line"><span class="cl">    <span class="n">numEntries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 存储每个label出现次数</span>
+</span></span><span class="line"><span class="cl">    <span class="n">label_counts</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 统计label出现次数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">featVec</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">current_label</span> <span class="o">=</span> <span class="n">featVec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">current_label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">label_counts</span><span class="p">:</span>  <span class="c1"># 提取label信息</span>
+</span></span><span class="line"><span class="cl">            <span class="n">label_counts</span><span class="p">[</span><span class="n">current_label</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 如果label未在dict中则加入</span>
+</span></span><span class="line"><span class="cl">        <span class="n">label_counts</span><span class="p">[</span><span class="n">current_label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># label计数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">shannon_ent</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 经验熵</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 计算经验熵</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">label_counts</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">label_counts</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">/</span> <span class="n">numEntries</span>
+</span></span><span class="line"><span class="cl">        <span class="n">shannon_ent</span> <span class="o">-=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">shannon_ent</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">splitDataSet</span><span class="p">(</span><span class="n">data_set</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ret_dataset</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">feat_vec</span> <span class="ow">in</span> <span class="n">data_set</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">feat_vec</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">reduced_feat_vec</span> <span class="o">=</span> <span class="n">feat_vec</span><span class="p">[:</span><span class="n">axis</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">reduced_feat_vec</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">feat_vec</span><span class="p">[</span><span class="n">axis</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ret_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reduced_feat_vec</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ret_dataset</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">chooseBestFeatureToSplit</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 特征数量</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_features</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 计算数据香农熵</span>
+</span></span><span class="line"><span class="cl">    <span class="n">base_entropy</span> <span class="o">=</span> <span class="n">calcShannonEnt</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 信息增益</span>
+</span></span><span class="line"><span class="cl">    <span class="n">best_info_gain</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 最优特征索引值</span>
+</span></span><span class="line"><span class="cl">    <span class="n">best_feature</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 遍历所有特征</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_features</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 获取dataset第i个特征</span>
+</span></span><span class="line"><span class="cl">        <span class="n">feat_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">exampel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">exampel</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 创建set集合，元素不可重合</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unique_val</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">feat_list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 经验条件熵</span>
+</span></span><span class="line"><span class="cl">        <span class="n">new_entropy</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 计算信息增益</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unique_val</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># sub_dataset划分后的子集</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sub_dataset</span> <span class="o">=</span> <span class="n">splitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 计算子集的概率</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prob</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_dataset</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 计算经验条件熵</span>
+</span></span><span class="line"><span class="cl">            <span class="n">new_entropy</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">calcShannonEnt</span><span class="p">(</span><span class="n">sub_dataset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 信息增益</span>
+</span></span><span class="line"><span class="cl">        <span class="n">info_gain</span> <span class="o">=</span> <span class="n">base_entropy</span> <span class="o">-</span> <span class="n">new_entropy</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 打印每个特征的信息增益</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;第</span><span class="si">%d</span><span class="s2">个特征的信息增益为</span><span class="si">%.3f</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">info_gain</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 计算信息增益</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">info_gain</span> <span class="o">&gt;</span> <span class="n">best_info_gain</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 更新信息增益</span>
+</span></span><span class="line"><span class="cl">            <span class="n">best_info_gain</span> <span class="o">=</span> <span class="n">info_gain</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 记录信息增益最大的特征的索引值</span>
+</span></span><span class="line"><span class="cl">            <span class="n">best_feature</span> <span class="o">=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;最优索引值：&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">best_feature</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">best_feature</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">majority_cnt</span><span class="p">(</span><span class="n">class_list</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">class_count</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 统计class_list中每个元素出现的次数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">vote</span> <span class="ow">in</span> <span class="n">class_list</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">vote</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">class_count</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">class_count</span><span class="p">[</span><span class="n">vote</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">class_count</span><span class="p">[</span><span class="n">vote</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 根据字典的值降序排列</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sorted_class_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">class_count</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">sorted_class_count</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">creat_tree</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 取分类标签(是否放贷：yes or no)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">class_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">exampel</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">exampel</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 如果类别完全相同则停止分类</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">class_list</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">class_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_list</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">class_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 遍历完所有特征时返回出现次数最多的类标签</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">majority_cnt</span><span class="p">(</span><span class="n">class_list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 选择最优特征</span>
+</span></span><span class="line"><span class="cl">    <span class="n">best_feature</span> <span class="o">=</span> <span class="n">chooseBestFeatureToSplit</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 最优特征的标签</span>
+</span></span><span class="line"><span class="cl">    <span class="n">best_feature_label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">best_feature</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">featLabels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_feature_label</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 根据最优特征的标签生成树</span>
+</span></span><span class="line"><span class="cl">    <span class="n">my_tree</span> <span class="o">=</span> <span class="p">{</span><span class="n">best_feature_label</span><span class="p">:</span> <span class="p">{}}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 删除已使用标签</span>
+</span></span><span class="line"><span class="cl">    <span class="k">del</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">best_feature</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 得到训练集中所有最优特征的属性值</span>
+</span></span><span class="line"><span class="cl">    <span class="n">feat_value</span> <span class="o">=</span> <span class="p">[</span><span class="n">exampel</span><span class="p">[</span><span class="n">best_feature</span><span class="p">]</span> <span class="k">for</span> <span class="n">exampel</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 去掉重复属性值</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unique_vls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">feat_value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">unique_vls</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">my_tree</span><span class="p">[</span><span class="n">best_feature_label</span><span class="p">][</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">creat_tree</span><span class="p">(</span><span class="n">splitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">best_feature</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">labels</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">my_tree</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取树的广度</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_num_leaves</span><span class="p">(</span><span class="n">my_tree</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_leaves</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">first_str</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">my_tree</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">second_dict</span> <span class="o">=</span> <span class="n">my_tree</span><span class="p">[</span><span class="n">first_str</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">second_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">num_leaves</span> <span class="o">+=</span> <span class="n">get_num_leaves</span><span class="p">(</span><span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">num_leaves</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">num_leaves</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取树的深度</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_tree_depth</span><span class="p">(</span><span class="n">my_tree</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c1"># 初始化决策树深度</span>
+</span></span><span class="line"><span class="cl">    <span class="n">firsr_str</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">my_tree</span><span class="p">))</span>     <span class="c1"># python3中myTree.keys()返回的是dict_keys,不在是list,所以不能使用myTree.keys()[0]的方法获取结点属性，可以使用list(myTree.keys())[0]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">second_dict</span> <span class="o">=</span> <span class="n">my_tree</span><span class="p">[</span><span class="n">firsr_str</span><span class="p">]</span>    <span class="c1"># 获取下一个字典</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">second_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>     <span class="c1"># 测试该结点是否为字典，如果不是字典，代表此结点为叶子结点</span>
+</span></span><span class="line"><span class="cl">            <span class="n">this_depth</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">get_tree_depth</span><span class="p">(</span><span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">this_depth</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">this_depth</span> <span class="o">&gt;</span> <span class="n">max_depth</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">max_depth</span> <span class="o">=</span> <span class="n">this_depth</span>      <span class="c1"># 更新层数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">max_depth</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">input_tree</span><span class="p">,</span> <span class="n">feat_labels</span><span class="p">,</span> <span class="n">test_vec</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 获取决策树节点</span>
+</span></span><span class="line"><span class="cl">    <span class="n">first_str</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">input_tree</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 下一个字典</span>
+</span></span><span class="line"><span class="cl">    <span class="n">second_dict</span> <span class="o">=</span> <span class="n">input_tree</span><span class="p">[</span><span class="n">first_str</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">feat_index</span> <span class="o">=</span> <span class="n">feat_labels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">first_str</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">second_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">test_vec</span><span class="p">[</span><span class="n">feat_index</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">class_label</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">feat_labels</span><span class="p">,</span> <span class="n">test_vec</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">class_label</span> <span class="o">=</span> <span class="n">second_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">class_label</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">storeTree</span><span class="p">(</span><span class="n">input_tree</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 存储树</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">input_tree</span><span class="p">,</span> <span class="n">fw</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">grabTree</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 读取树</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 数据集</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dataSet</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">              <span class="c1"># [1, 0, 0, 0, &#39;yes&#39;],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 分类属性</span>
+</span></span><span class="line"><span class="cl">    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;年龄&#39;</span><span class="p">,</span> <span class="s1">&#39;有工作&#39;</span><span class="p">,</span> <span class="s1">&#39;有自己的房子&#39;</span><span class="p">,</span> <span class="s1">&#39;信贷情况&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">calcShannonEnt</span><span class="p">(</span><span class="n">dataSet</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">featLabels</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">myTree</span> <span class="o">=</span> <span class="n">creat_tree</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">myTree</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">get_tree_depth</span><span class="p">(</span><span class="n">myTree</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">get_num_leaves</span><span class="p">(</span><span class="n">myTree</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#测试数据</span>
+</span></span><span class="line"><span class="cl">    <span class="n">testVec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">,</span> <span class="n">testVec</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;放贷&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;不放贷&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 存储树</span>
+</span></span><span class="line"><span class="cl">    <span class="n">storeTree</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="s1">&#39;classifierStorage.txt&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 读取树</span>
+</span></span><span class="line"><span class="cl">    <span class="n">myTree2</span> <span class="o">=</span> <span class="n">grabTree</span><span class="p">(</span><span class="s1">&#39;classifierStorage.txt&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">myTree2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">testVec2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result2</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">myTree2</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">,</span> <span class="n">testVec</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">result2</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;放贷&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">result2</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;不放贷&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="id3优缺点">ID3优缺点
+</h3><p>算法原理简单易懂，生成的决策树易于理解。</p>
+<p>缺点：</p>
+<ul>
+<li>只能处理离散型属性，对于连续型属性需要进行额外的处理。</li>
+<li>在划分属性时偏向于选择取值较多的属性，这可能导致生成的决策树过于复杂，出现过拟合现象。</li>
+<li>没有考虑剪枝操作，生成的决策树可能存在冗余分支，影响预测性能。</li>
+</ul>
+<p>为了克服这些缺点，提出了C4.5算法等改进版本，通过引入对连续型属性的处理、使用信息增益率代替信息增益作为划分标准以及引入剪枝操作等方式来优化决策树的生成过程。</p>
+<h2 id="c45">C4.5
+</h2><h3 id="信息增益率">信息增益率
+</h3><p>设有限个样本集合S ，根据条件属性A划分S所得子集为$S_1,S_2,\cdots,S_n$，则定义A划分样本集S的信息增益率为：</p>
+$$
+\text{GainRate}(S,A)=\text{Gain}(S,A)/IV(A)
+$$<p>
+其中，$\text{Gain}(S,A)$的计算公式为$\text{Gain}(S,A) = E(S) - E(S,A)$，$IV(A)$如下：</p>
+$$
+IV(A)=-\sum_{j = 1}^{v}\frac{|S_j|}{|S|}\log_2(\frac{|S_j|}{|S|})
+$$<p>
+称为属性A的 “固有值” ，属性A的取值数目越多，即v越大，则IV(A)的值通常会越大。通过引入固有值的概念，信息增益率能够平衡属性取值多样性和信息增益之间的关系，从而选择出更具代表性的划分属性。</p>
+<h3 id="剪枝">剪枝
+</h3><p>引入了剪枝操作来避免决策树过拟合。剪枝操作分为预剪枝和后剪枝两种。</p>
+<p>预剪枝是在决策树生成过程中提前停止树的生长，通过设定一些停止条件（如节点中样本数少于某个阈值、信息增益小于某个阈值等）来限制树的深度。这种方法简单有效，但可能由于过早停止树的生长而导致欠拟合。</p>
+<p>后剪枝是在决策树生成完成后对其进行修剪，通过删除一些子树或叶子节点来简化树的结构。C4.5算法采用了一种基于错误率降低的剪枝策略，通过计算删除某个子树前后的错误率变化来决定是否进行剪枝。这种方法能够保留更多的有用信息，但计算复杂度较高。</p>
+<p>通过剪枝操作，C4.5算法能够在保证一定性能的前提下简化决策树的结构，提高模型的泛化能力。</p>
+<h3 id="id3c45">ID3&amp;C4.5
+</h3><p>ID3和C4.5算法在决策树生成过程中有着明显的不同。ID3算法采用信息增益作为划分标准，容易偏向于选择取值较多的属性，可能导致生成的决策树过于复杂。而C4.5算法通过引入信息增益率和剪枝操作，有效克服了这些问题，能够生成更加简洁、有效的决策树。</p>
+<p>在实际应用中，C4.5算法通常能够取得比ID3算法更好的性能。它不仅能够处理离散型属性，还能通过离散化处理来应对连续型属性。此外，C4.5算法的剪枝操作能够有效防止过拟合，提高模型的泛化能力。因此，在需要构建决策树模型时，C4.5算法通常是一个更好的选择。</p>
+<p>虽然C4.5算法在很多方面都有所改进，但它仍然是一种基于启发式规则的算法，其性能受到数据集特性的影响。在实际应用中，需要根据具体问题和数据集特点来选择合适的算法和参数设置。</p>
+<h2 id="cart">CART
+</h2><p>CART（Classification and Regression Trees）（分类回归树）分为分类树和回归树算法是一种应用广泛的决策树学习算法，既可以用于分类也可以用于回归。</p>
+<p>是回归时还是分类树，只和预测的值有关，跟样本的某一特征是否连续无关。</p>
+<p>sklearn中的决策树算法 DecisionTreeRegressor、DecisionTreeClassifier 使用的都是CART算法</p>
+<h3 id="cart树">CART树
+</h3><p>CART树是一种二叉树，这意味着每个非叶子节点都有两个子节点。对于分类问题，CART树采用二分类的方式，每次将数据划分为两个子集；对于回归问题，CART树则是将输出值划分为连续型的值。CART分类树利用基尼指数进行二分</p>
+<p>CART回归树：</p>
+<p><img src="/p/%E5%86%B3%E7%AD%96%E6%A0%91/d6bd9fd48ed01e34214b46e446139460.png"
+	width="1247"
+	height="516"
+	srcset="/p/%E5%86%B3%E7%AD%96%E6%A0%91/d6bd9fd48ed01e34214b46e446139460_hu_dff994d5a011f234.png 480w, /p/%E5%86%B3%E7%AD%96%E6%A0%91/d6bd9fd48ed01e34214b46e446139460_hu_8e0762d5f743295.png 1024w"
+	loading="lazy"
+	
+		alt="d6bd9fd48ed01e34214b46e446139460"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="241"
+		data-flex-basis="580px"
+	
+></p>
+<h3 id="分类树划分选择gini系数">分类树划分选择—Gini系数
+</h3>$$
+\text{Gini}(S)=\sum_{i = 1}^{k}p_i(1 - p_i)=1 - \sum_{i = 1}^{k}(p_i)^2
+$$<p>当对一个属性进行划分时，希望划分后的子集的Gini系数之和最小，即不确定性最小。</p>
+$$
+\text{Gini}(D)=1 - (5/10)^2 - (3/10)^2 - (2/10)^2 = 0.48
+$$<p>
+如果根据某个属性将集合划分为两个子集D1和D2，那么划分后的Gini系数之和为：</p>
+$$
+\text{Gini}_{split}=(N1/N)*\text{Gini}(D1)+(N2/N)*\text{Gini}(D2)
+$$<p>其中，N1和N2分别是子集D1和D2的样本数，N是总样本数。需要找到使$\text{Gini}_{split}$最小的划分方式。</p>
+<h3 id="回归树划分选择loss函数">回归树划分选择—loss函数
+</h3><p>CART回归树预测回归连续型数据，假设X与Y分别示输入和输出变量，并且Y是连续变量，在训练数据集所在的输入空间中，递归的将每个区域划分为两个子区域并决定每个子区域上的输出值，构建二叉决策树。$D = (x_1, y_1), (x_2, y_2), \cdots, (x_n, y_n) $</p>
+<p>既然是回归树，存在俩问题：</p>
+<ul>
+<li>如何选择划分点？</li>
+<li>如何决定树中叶子节点的输出值？</li>
+</ul>
+<h3 id="cart优缺点">CART优缺点
+</h3><p>优点：</p>
+<ul>
+<li>既可以用于分类也可以用于回归，具有广泛的应用场景。</li>
+<li>能够生成易于理解的决策树，方便进行特征解释和可视化。</li>
+<li>对缺失值不敏感，能够处理包含缺失值的数据集。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>容易过拟合，特别是在没有剪枝的情况下。</li>
+<li>对噪声数据较为敏感，可能生成复杂的决策树。</li>
+</ul>
+<p>与ID3和C4.5算法相比，CART算法采用了二叉树结构和Gini系数作为划分标准，使得决策树更加简洁和高效。同时，CART算法还支持回归问题，具有更广泛的应用范围。</p>
+<ul>
+<li>划分标准的差异：ID3使用信息增益偏向特征值多的特征；C4.5使用信息增益率克服信息增益的缺点，偏向于特征值小的特征；CART使用基尼指数克服C4.5需要求log的巨大计算量，偏向于特征值较多的特征。</li>
+<li>使用场景的差异：ID3和C4.5都只能用于分类问题，CART可以用于分类和回归问题；ID3和C4.5是多叉树，速度较慢，CART是二叉树，计算速度很快；</li>
+<li>样本数据的差异：ID3只能处理离散数据且缺失值敏感，C4.5和CART可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议C4.5、大样本建议CART。C4.5处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而CART本身是一种大样本的统计方法，小样本处理下泛化误差较大；</li>
+<li>样本特征的差异：ID3和C4.5层级之间只使用一次特征，CART可多次重复使用特征；</li>
+<li>剪枝策略的差异：ID3没有剪枝策略，C4.5是通过悲观剪枝策略来修正树的准确性，而 CART是通过代价复杂度剪枝。</li>
+</ul>
+<h3 id="对连续型属性的处理">对连续型属性的处理
+</h3><p>对于连续型属性，CART算法采用二分法进行处理。具体做法是对连续属性进行排序，考虑相邻属性值的平均值作为划分点，然后选择使划分后子集Gini系数之和最小的划分点进行划分。</p>
+<h2 id="分类案例">分类案例
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 加载鸢尾花数据集</span>
+</span></span><span class="line"><span class="cl"><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 划分训练集和测试集</span>
+</span></span><span class="line"><span class="cl"><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 接下来，创建决策树分类器对象，并使用训练数据对其进行训练。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建决策树分类器对象</span>
+</span></span><span class="line"><span class="cl"><span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用训练数据对分类器进行训练</span>
+</span></span><span class="line"><span class="cl"><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 训练完成后，使用测试数据对模型进行评估，并计算分类准确率。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用测试数据进行预测</span>
+</span></span><span class="line"><span class="cl"><span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 计算分类准确率</span>
+</span></span><span class="line"><span class="cl"><span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Accuracy:&#34;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span> <span class="c1"># Accuracy: 1.0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上述使用clf=DecisionTreeClassifier()函数的时候设置参数max_depth=1，其实DecisionTreeClassifier是一个用于构建决策树模型的Python库。以下是该函数的参数解释：</p>
+<p>criterion（标准化度量）：指定使用哪种标准化度量方法，可选值包括“entropy”（信息熵）和“gini”（基尼系数）。默认值为“entropy”。</p>
+<p>min_samples_leaf（叶子节点最小样本数）：如果一个叶子节点的样本数小于这个值，则将其视为噪声点，并在训练集中删除。默认值为3。</p>
+<p>max_depth（最大深度）：指定决策树中的最大深度。深度越大，越容易过拟合，推荐树的深度为5-20之间。默认值为None。</p>
+<p>random_state（随机种子）：用于生成均匀分布的随机数。如果不提供，则会使用当前时间作为随机种子。默认值为None。</p>
+<p>如果将上述函数的参数设置为2，即clf=DecisionTreeClassifier(max_depth=2)，那么预测的精度就会发生改变，这是由于树的深度越大，越容易发生过拟合。</p>
+<p>绘制决策树：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 绘制决策树</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tree</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">feature_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">class_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/%E5%86%B3%E7%AD%96%E6%A0%91/image-20250405004919061.png"
+	width="3600"
+	height="2400"
+	srcset="/p/%E5%86%B3%E7%AD%96%E6%A0%91/image-20250405004919061_hu_61cd7ab8145d8977.png 480w, /p/%E5%86%B3%E7%AD%96%E6%A0%91/image-20250405004919061_hu_c5951f11216f3d70.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250405004919061"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="150"
+		data-flex-basis="360px"
+	
+></p>
+<h2 id="回归案例">回归案例
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_california_housing</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 加载加利福尼亚住房数据</span>
+</span></span><span class="line"><span class="cl"><span class="n">housing</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">housing</span><span class="o">.</span><span class="n">data</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">housing</span><span class="o">.</span><span class="n">target</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 划分训练集和测试集</span>
+</span></span><span class="line"><span class="cl"><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建决策树回归器对象，并限制树的深度避免过于复杂</span>
+</span></span><span class="line"><span class="cl"><span class="n">regressor</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用训练数据对回归器进行训练</span>
+</span></span><span class="line"><span class="cl"><span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用测试数据进行预测</span>
+</span></span><span class="line"><span class="cl"><span class="n">y_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 计算均方误差</span>
+</span></span><span class="line"><span class="cl"><span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Mean Squared Error:&#34;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span> <span class="c1"># Mean Squared Error: 0.6325363214073455</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 绘制决策树回归模型</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 与分类决策树的可视化类似，但需要注意的是，回归树的叶子节点输出的是具体的数值。</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tree</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">feature_names</span><span class="o">=</span><span class="n">housing</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/%E5%86%B3%E7%AD%96%E6%A0%91/image-20250405005702534.png"
+	width="4500"
+	height="2400"
+	srcset="/p/%E5%86%B3%E7%AD%96%E6%A0%91/image-20250405005702534_hu_fabdde225c206e16.png 480w, /p/%E5%86%B3%E7%AD%96%E6%A0%91/image-20250405005702534_hu_1f66a04f32b60e25.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250405005702534"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="187"
+		data-flex-basis="450px"
+	
+></p>
+<h2 id="参考">参考
+</h2><p><a class="link" href="https://blog.csdn.net/qq_38614074/article/details/137515234?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522d1af7fbdba495552ad7dc3db85cbf9ce%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=d1af7fbdba495552ad7dc3db85cbf9ce&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-137515234-null-null.142%5ev102%5epc_search_result_base2&amp;utm_term=%E5%86%B3%E7%AD%96%E6%A0%91&amp;spm=1018.2226.3001.4187"  target="_blank" rel="noopener"
+    >【机器学习-15】决策树（Decision Tree，DT）算法：原理与案例实现</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a>
+        
+            <a href="/tags/%E4%BF%A1%E6%81%AF%E7%86%B5/">信息熵</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-04-29 11:41:32
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0-%E6%8A%95%E7%A5%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title"> 集成学习-投票法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随机森林</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 白菜
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2bd930f40cb74ea588b47ef953f08d64f292fccc9a36da52738ac4979dd64239.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=http://localhost:12563/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "http://localhost:12563/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+
+<style>
+  #backTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      z-index: 99;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      background-image: url(http://localhost:12563/icons/backTop.svg);
+  }
+</style>
+
+<script>
+  
+
+  function initScrollTop() {
+      let rightSideBar = document.querySelector(".right-sidebar");
+      if (!rightSideBar) {
+          return;
+      }
+      
+      let btn = document.createElement("div");
+      btn.id = "backTopBtn";
+      btn.onclick = backToTop
+      rightSideBar.appendChild(btn)
+      
+      window.onscroll = function() {
+          
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+              btn.style.display = "block";
+          } else {
+              btn.style.display = "none";
+          }
+      };
+  }
+
+  
+
+  function backToTop(){
+      window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  initScrollTop();
+</script>
+
+
+
+
+<style>
+  .highlight {
+       
+      max-height: 400px;
+      overflow: hidden;
+  }
+
+  .code-show {
+      max-height: none !important;
+  }
+
+  .code-more-box {
+      width: 100%;
+      padding-top: 78px;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+  }
+
+  .code-more-btn {
+      display: block;
+      margin: auto;
+      width: 44px;
+      height: 22px;
+      background: #f0f0f5;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      padding-top: 6px;
+      cursor: pointer;
+  }
+
+  .code-more-img {
+      cursor: pointer !important;
+      display: block;
+      margin: auto;
+      width: 22px;
+      height: 16px;
+  }
+</style>
+
+<script>
+function initCodeMoreBox() {
+  let codeBlocks = document.querySelectorAll(".highlight");
+  if (!codeBlocks) {
+    return;
+  }
+  codeBlocks.forEach(codeBlock => {
+    
+    if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+      return;
+    }
+    
+    
+    let codeMoreBox = document.createElement('div');
+    codeMoreBox.classList.add('code-more-box');
+    
+    let codeMoreBtn = document.createElement('span');
+    codeMoreBtn.classList.add('code-more-btn');
+    codeMoreBtn.addEventListener('click', () => {
+      codeBlock.classList.add('code-show');
+      codeMoreBox.style.display = 'none';
+      
+      window.dispatchEvent(new Event('resize'))
+    })
+    
+    let img = document.createElement('img');
+    img.classList.add('code-more-img');
+    img.src = "http://localhost:12563/icons/codeMore.png"
+    
+    codeMoreBtn.appendChild(img);
+    codeMoreBox.appendChild(codeMoreBtn);
+    codeBlock.appendChild(codeMoreBox)
+  })
+}
+
+initCodeMoreBox();
+</script>
+
+
+        
+        
+    </body>
+</html>
