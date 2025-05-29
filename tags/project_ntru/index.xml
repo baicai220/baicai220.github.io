@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>白菜</title>
-        <link>https://baicai220.github.io/</link>
-        <description>Recent content on 白菜</description>
+        <title>project_ntru on 白菜</title>
+        <link>https://baicai220.github.io/tags/project_ntru/</link>
+        <description>Recent content in project_ntru on 白菜</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>白菜</copyright><atom:link href="https://baicai220.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <copyright>白菜</copyright><atom:link href="https://baicai220.github.io/tags/project_ntru/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>NTRU</title>
         <link>https://baicai220.github.io/p/ntru/</link>
         <pubDate>Fri, 30 May 2025 01:08:29 +0800</pubDate>
@@ -57,47 +57,6 @@ $$ w_{t+1} \leftarrow \sum_{k = 1}^{K} \frac{n_k}{n} w_{t + 1}^k $$&lt;p&gt; 	//
 &lt;p&gt;当$E = 1\ B = \infty$时，对应的就是FedSGD，即每一轮客户机一次性将所有本地数据投入训练，更新模型参数。&lt;/p&gt;
 &lt;p&gt;对于一个有着$n_k$个本地样本的客户机$k$来说，每轮的本地更新次数为$u_k = E \cdot \frac{n_k}{B}$。&lt;/p&gt;
 </description>
-        </item>
-        <item>
-        <title>决策树</title>
-        <link>https://baicai220.github.io/p/%E5%86%B3%E7%AD%96%E6%A0%91/</link>
-        <pubDate>Wed, 28 May 2025 14:58:15 +0800</pubDate>
-        
-        <guid>https://baicai220.github.io/p/%E5%86%B3%E7%AD%96%E6%A0%91/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>归档</title>
-        <link>https://baicai220.github.io/archives/</link>
-        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/archives/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>关于</title>
-        <link>https://baicai220.github.io/%E5%85%B3%E4%BA%8E/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/%E5%85%B3%E4%BA%8E/</guid>
-        <description>&lt;p&gt;记录一些哈哈哈哈&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>技术链接</title>
-        <link>https://baicai220.github.io/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>搜索</title>
-        <link>https://baicai220.github.io/search/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/search/</guid>
-        <description></description>
         </item>
         
     </channel>

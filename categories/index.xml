@@ -6,13 +6,54 @@
         <description>Recent content in Categories on 白菜</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>白菜</copyright><atom:link href="https://baicai220.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Test</title>
-        <link>https://baicai220.github.io/categories/test/</link>
+        <copyright>白菜</copyright>
+        <lastBuildDate>Fri, 30 May 2025 01:13:56 +0800</lastBuildDate><atom:link href="https://baicai220.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>java</title>
+        <link>https://baicai220.github.io/categories/java/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://baicai220.github.io/categories/test/</guid>
-        <description>&lt;img src="https://baicai220.github.io/categories/test/hutomo-abrianto-l2jk-uxb1BY-unsplash.jpg" alt="Featured image of post Test" /&gt;</description>
+        <guid>https://baicai220.github.io/categories/java/</guid>
+        <description>&lt;img src="https://baicai220.github.io/categories/java/java.png" alt="Featured image of post java" /&gt;</description>
+        </item>
+        <item>
+        <title>python</title>
+        <link>https://baicai220.github.io/categories/python/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://baicai220.github.io/categories/python/</guid>
+        <description>&lt;img src="https://baicai220.github.io/categories/python/python.jpg" alt="Featured image of post python" /&gt;</description>
+        </item>
+        <item>
+        <title>机器学习</title>
+        <link>https://baicai220.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://baicai220.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+        <description>&lt;img src="https://baicai220.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/ml.png" alt="Featured image of post 机器学习" /&gt;</description>
+        </item>
+        <item>
+        <title>联邦学习</title>
+        <link>https://baicai220.github.io/categories/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://baicai220.github.io/categories/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</guid>
+        <description>&lt;img src="https://baicai220.github.io/categories/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/fl.jpg" alt="Featured image of post 联邦学习" /&gt;</description>
+        </item>
+        <item>
+        <title>密码学</title>
+        <link>https://baicai220.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://baicai220.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/</guid>
+        <description>&lt;img src="https://baicai220.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/cryptology.jpg" alt="Featured image of post 密码学" /&gt;</description>
+        </item>
+        <item>
+        <title>数据结构与算法</title>
+        <link>https://baicai220.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://baicai220.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</guid>
+        <description>&lt;img src="https://baicai220.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/algorithm.jpg" alt="Featured image of post 数据结构与算法" /&gt;</description>
         </item>
         
     </channel>
