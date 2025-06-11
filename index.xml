@@ -28,7 +28,7 @@
         <pubDate>Wed, 28 May 2025 15:02:19 +0800</pubDate>
         
         <guid>https://baicai220.github.io/p/fed_avg/</guid>
-        <description>&lt;img src="https://baicai220.github.io/p/fed_avg/back.png" alt="Featured image of post Fed_Avg" /&gt;&lt;h1 id=&#34;fed_avg&#34;&gt;Fed_Avg
+        <description>&lt;img src="https://baicai220.github.io/p/fed_avg/%E8%83%8C%E6%99%AF.png" alt="Featured image of post Fed_Avg" /&gt;&lt;h1 id=&#34;fed_avg&#34;&gt;Fed_Avg
 &lt;/h1&gt;&lt;h2 id=&#34;算法原理&#34;&gt;算法原理
 &lt;/h2&gt;&lt;p&gt;设一共有$K$个客户机。中心服务器初始化模型参数，执行若干轮，每轮选取至少1个至多$K$个客户机参与训练，每个被选中的客户机同根据服务器下发的本轮（$t$轮）模型参数$w_t$，用自己的数据训练得到模型参数$w_{t + 1}^k$，上传回服务器。服务器将收集来的各客户机的模型根据各样本数量用加权平均的方式进行聚合，得到下一轮的模型参数$w_{t + 1}$：&lt;/p&gt;
 $$ w_{t+1} \leftarrow \sum_{k = 1}^{K} \frac{n_k}{n} w_{t + 1}^k $$&lt;p&gt; 	// $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量&lt;/p&gt;
