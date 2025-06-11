@@ -2,7 +2,7 @@
 title: "Fed_Avg"
 description: 
 date: 2025-05-28T15:02:19+08:00
-image: back.png
+image: 背景.png
 math: true
 mermaid: true
 license: false
