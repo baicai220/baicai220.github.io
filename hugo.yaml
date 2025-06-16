@@ -1,6 +1,6 @@
 baseurl: "https://baicai220.github.io/"  # please update this to your actual URL
 languageCode: "en-us"
-title: "A minimal Hugo website"
+title: "baicai"
 theme: "hugo-xmin"
 googleAnalytics: ""
 disqusShortname: ""
