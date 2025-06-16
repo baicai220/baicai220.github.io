@@ -4,4 +4,3 @@
 
 本地运行： `hugo server`
 
-> `hugo server -D  # 包含草稿文章`

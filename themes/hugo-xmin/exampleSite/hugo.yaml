@@ -1,4 +1,4 @@
-baseurl: "https://baicai220.github.io/"  # please update this to your actual URL
+baseurl: "https://example.org/"  # please update this to your actual URL
 languageCode: "en-us"
 title: "A minimal Hugo website"
 theme: "hugo-xmin"
@@ -30,14 +30,11 @@ menu:
 
 params:
   description: "A website built through Hugo and blogdown."
-  footer: "&copy; [baicai](https://baicai220.github.io/) 2025 -- {Year} | [Github](https://github.com/baicai220?tab=repositories) "
+  footer: "&copy; [Yihui Xie](https://yihui.org) 2017 -- {Year} | [Github](https://github.com/yihui) | [Twitter](https://twitter.com/xieyihui)"
 
 markup:
   highlight:
-    codeFences: true          # 开启 Markdown 中 ```代码块``` 支持
-    noClasses: false          # 使用 CSS 类（更轻量、更易定制）
-    style: dracula            # 可选：monokai / github / dracula / solarized-light 等
-    tabWidth: 4               # Tab 显示空格数
+    codeFences: false
   goldmark:
     renderer:
       unsafe: true
@@ -53,12 +50,3 @@ markup:
           inline:
           - - \(
             - \)
-          - - $
-            - $
-
-
-outputs:
-  home:
-    - HTML
-    - RSS
-    - JSON
