@@ -1,104 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>白菜</title>
-        <link>https://baicai220.github.io/</link>
-        <description>Recent content on 白菜</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>zh-cn</language>
-        <copyright>白菜</copyright><atom:link href="https://baicai220.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>NTRU</title>
-        <link>https://baicai220.github.io/p/ntru/</link>
-        <pubDate>Fri, 30 May 2025 01:08:29 +0800</pubDate>
-        
-        <guid>https://baicai220.github.io/p/ntru/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>CKKS</title>
-        <link>https://baicai220.github.io/p/ckks/</link>
-        <pubDate>Wed, 28 May 2025 15:02:35 +0800</pubDate>
-        
-        <guid>https://baicai220.github.io/p/ckks/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Fed_Avg</title>
-        <link>https://baicai220.github.io/p/fed_avg/</link>
-        <pubDate>Wed, 28 May 2025 15:02:19 +0800</pubDate>
-        
-        <guid>https://baicai220.github.io/p/fed_avg/</guid>
-        <description>&lt;img src="https://baicai220.github.io/p/fed_avg/%E8%83%8C%E6%99%AF.png" alt="Featured image of post Fed_Avg" /&gt;&lt;h1 id=&#34;fed_avg&#34;&gt;Fed_Avg
-&lt;/h1&gt;&lt;h2 id=&#34;算法原理&#34;&gt;算法原理
-&lt;/h2&gt;&lt;p&gt;设一共有$K$个客户机。中心服务器初始化模型参数，执行若干轮，每轮选取至少1个至多$K$个客户机参与训练，每个被选中的客户机同根据服务器下发的本轮（$t$轮）模型参数$w_t$，用自己的数据训练得到模型参数$w_{t + 1}^k$，上传回服务器。服务器将收集来的各客户机的模型根据各样本数量用加权平均的方式进行聚合，得到下一轮的模型参数$w_{t + 1}$：&lt;/p&gt;
-$$ w_{t+1} \leftarrow \sum_{k = 1}^{K} \frac{n_k}{n} w_{t + 1}^k $$&lt;p&gt; 	// $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;FedAvg步骤：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;$K$个客户端编号为$1...k$；$B$，$E$，$\eta$ 分别代表本地的minibatch size，epochs，学习率learning rate&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;服务器执行：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;初始化$w_0$&lt;/p&gt;
-&lt;p&gt;for 每轮$t = 1,2,\dots$, do&lt;/p&gt;
-&lt;p&gt;  $m \leftarrow \max(C \cdot K, 1)$ 	// $C$为比例系数&lt;/p&gt;
-&lt;p&gt;  $S_t \leftarrow$ (随机选取$m$个客户端)&lt;/p&gt;
-&lt;p&gt;  for 每个客户端$k \in S_t$同时 do&lt;/p&gt;
-&lt;p&gt;    $w_{t + 1}^k \leftarrow$ 客户端更新$(k, w_t)$&lt;/p&gt;
-&lt;p&gt;    $w_{t+1}\leftarrow\sum_{k = 1}^{K}\frac{n_k}{n}w_{t + 1}^k$  // $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;客户端更新&lt;/strong&gt;$(k, w_t)$: 　　// 在客户端 $k$ 上运行&lt;/p&gt;
-&lt;p&gt;$\beta \leftarrow$ (将$P_k$分成若干大小为$B$的batch) 	// $P_k$为客户机$k$上数据点的索引集，$P_k$大小为$n_k$&lt;/p&gt;
-&lt;p&gt;for 每个本地的epoch $i (1 \sim E)$ do&lt;/p&gt;
-&lt;p&gt;  for batch $b \in \beta$ do&lt;/p&gt;
-&lt;p&gt;    $w \leftarrow w - \eta \nabla l(w; b)$ 	// $\nabla$为计算梯度，$l(w; b)$为损失函数&lt;/p&gt;
-&lt;p&gt;返回$w$给服务器&lt;/p&gt;
-&lt;p&gt;为了增加客户机计算量，可以在中心服务器做聚合（加权平均）操作前在每个客户机上多迭代更新几次。计算量由三个参数决定：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;$C$，每一轮（round）参与计算的客户机比例。&lt;/li&gt;
-&lt;li&gt;$E$(epochs)，每一轮每个客户机投入其全部本地数据训练一遍的次数。&lt;/li&gt;
-&lt;li&gt;$B$(batch size)，用于客户机更新的batch大小。$B = \infty$表示batch为全部样本，此时就是full - batch梯度下降了。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;当$E = 1\ B = \infty$时，对应的就是FedSGD，即每一轮客户机一次性将所有本地数据投入训练，更新模型参数。&lt;/p&gt;
-&lt;p&gt;对于一个有着$n_k$个本地样本的客户机$k$来说，每轮的本地更新次数为$u_k = E \cdot \frac{n_k}{B}$。&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>决策树</title>
-        <link>https://baicai220.github.io/p/%E5%86%B3%E7%AD%96%E6%A0%91/</link>
-        <pubDate>Wed, 28 May 2025 14:58:15 +0800</pubDate>
-        
-        <guid>https://baicai220.github.io/p/%E5%86%B3%E7%AD%96%E6%A0%91/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>归档</title>
-        <link>https://baicai220.github.io/archives/</link>
-        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/archives/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>关于</title>
-        <link>https://baicai220.github.io/%E5%85%B3%E4%BA%8E/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/%E5%85%B3%E4%BA%8E/</guid>
-        <description>&lt;p&gt;记录一些哈哈哈哈&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>技术链接</title>
-        <link>https://baicai220.github.io/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>搜索</title>
-        <link>https://baicai220.github.io/search/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://baicai220.github.io/search/</guid>
-        <description></description>
-        </item>
-        
-    </channel>
+  <channel>
+    <title>Home on A minimal Hugo website</title>
+    <link>https://baicai220.github.io/</link>
+    <description>Recent content in Home on A minimal Hugo website</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>fed_avg</title>
+      <link>https://baicai220.github.io/post/2025/06/16/fed_avg/</link>
+      <pubDate>Mon, 16 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/16/fed_avg/</guid>
+      <description>&lt;h1 id=&#34;fed_avg&#34;&gt;Fed_Avg&lt;/h1&gt;&#xA;&lt;h2 id=&#34;算法原理&#34;&gt;算法原理&lt;/h2&gt;&#xA;&lt;p&gt;设一共有$K$个客户机。中心服务器初始化模型参数，执行若干轮，每轮选取至少1个至多$K$个客户机参与训练，每个被选中的客户机同根据服务器下发的本轮（$t$轮）模型参数$w_t$，用自己的数据训练得到模型参数$w_{t + 1}^k$，上传回服务器。服务器将收集来的各客户机的模型根据各样本数量用加权平均的方式进行聚合，得到下一轮的模型参数$w_{t + 1}$：&lt;/p&gt;&#xA;$$ w_{t+1} \leftarrow \sum_{k = 1}^{K} \frac{n_k}{n} w_{t + 1}^k $$&lt;p&gt; &#x9;// $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;FedAvg步骤：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;$K$个客户端编号为$1...k$；$B$，$E$，$\eta$ 分别代表本地的minibatch size，epochs，学习率learning rate&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;服务器执行：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;初始化$w_0$&lt;/p&gt;&#xA;&lt;p&gt;for 每轮$t = 1,2,\dots$, do&lt;/p&gt;&#xA;&lt;p&gt;​ $m \leftarrow \max(C \cdot K, 1)$ &#x9;// $C$为比例系数&lt;/p&gt;&#xA;&lt;p&gt;​ $S_t \leftarrow$ (随机选取$m$个客户端)&lt;/p&gt;&#xA;&lt;p&gt;​ for 每个客户端$k \in S_t$同时 do&lt;/p&gt;&#xA;&lt;p&gt;​​ ​ $w_{t + 1}^k \leftarrow$ 客户端更新$(k, w_t)$&lt;/p&gt;&#xA;&lt;p&gt;​​ ​ $w_{t+1}\leftarrow\sum_{k = 1}^{K}\frac{n_k}{n}w_{t + 1}^k$  // $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;客户端更新&lt;/strong&gt;$(k, w_t)$: 　　// 在客户端 $k$ 上运行&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>About This Site</title>
+      <link>https://baicai220.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/about/</guid>
+      <description>&lt;p&gt;nothing&lt;/p&gt;</description>
+    </item>
+  </channel>
 </rss>
