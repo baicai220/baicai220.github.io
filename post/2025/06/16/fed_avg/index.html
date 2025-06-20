@@ -45,16 +45,16 @@ $$ w_{t+1} \leftarrow \sum_{k = 1}^{K} \frac{n_k}{n} w_{t + 1}^k $$<p> 	// $n_k$
 <p><strong>服务器执行：</strong></p>
 <p>初始化$w_0$</p>
 <p>for 每轮$t = 1,2,\dots$, do</p>
-<p>​ $m \leftarrow \max(C \cdot K, 1)$ 	// $C$为比例系数</p>
-<p>​ $S_t \leftarrow$ (随机选取$m$个客户端)</p>
-<p>​ for 每个客户端$k \in S_t$同时 do</p>
-<p>​​ ​ $w_{t + 1}^k \leftarrow$ 客户端更新$(k, w_t)$</p>
-<p>​​ ​ $w_{t+1}\leftarrow\sum_{k = 1}^{K}\frac{n_k}{n}w_{t + 1}^k$  // $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量</p>
+<p> $m \leftarrow \max(C \cdot K, 1)$ 	// $C$为比例系数</p>
+<p> $S_t \leftarrow$ (随机选取$m$个客户端)</p>
+<p> for 每个客户端$k \in S_t$同时 do</p>
+<p>​ ​ $w_{t + 1}^k \leftarrow$ 客户端更新$(k, w_t)$</p>
+<p>​ ​ $w_{t+1}\leftarrow\sum_{k = 1}^{K}\frac{n_k}{n}w_{t + 1}^k$  // $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量</p>
 <p><strong>客户端更新</strong>$(k, w_t)$: 　　// 在客户端 $k$ 上运行</p>
 <p>$\beta \leftarrow$ (将$P_k$分成若干大小为$B$的batch) 	// $P_k$为客户机$k$上数据点的索引集，$P_k$大小为$n_k$</p>
 <p>for 每个本地的epoch $i (1 \sim E)$ do</p>
-<p>​​ for batch $b \in \beta$ do</p>
-<p>​​ ​ $w \leftarrow w - \eta \nabla l(w; b)$ 	// $\nabla$为计算梯度，$l(w; b)$为损失函数</p>
+<p> for batch $b \in \beta$ do</p>
+<p>​ ​ $w \leftarrow w - \eta \nabla l(w; b)$ 	// $\nabla$为计算梯度，$l(w; b)$为损失函数</p>
 <p>返回$w$给服务器</p>
 <p>为了增加客户机计算量，可以在中心服务器做聚合（加权平均）操作前在每个客户机上多迭代更新几次。计算量由三个参数决定：</p>
 <ul>
