@@ -1,5 +1,5 @@
 ---
-title: TFF
+title: 用TFF构建fed_avg
 date: '2025-06-27'
 mermaid: true
 categories:
@@ -10,7 +10,7 @@ tags:
 
 
 
-# TFF
+# 用TFF构建fed_avg
 
 ## learning API
 
