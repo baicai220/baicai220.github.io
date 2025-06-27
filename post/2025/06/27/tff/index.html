@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TFF | baicai</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/syntax.css">
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<link rel="stylesheet" href="/css/custom.css">
+
+<div class="article-meta">
+<h1><span class="title">TFF</span></h1>
+
+<h2 class="date">2025/06/27</h2>
+</div>
+
+<main>
+<h1 id="tff">TFF</h1>
+<h2 id="learning-api">learning API</h2>
+<p><code>tff.learning</code>包封装了常见的联邦学习算法（如 FedAvg）</p>
+<p>直接用就行 如直接用 ： <code>tff.learning.algorithms.build_weighted_fed_avg</code></p>
+<h2 id="core-api">Core API</h2>
+<p>主要在<code>tff</code>包下面</p>
+<p>允许自定义联邦学习算法的分布式逻辑。</p>
+<p>将 TensorFlow 代码与分布式通信操作结合，无需关注通信细节。</p>
+<p>是构建 <code>tff.learning</code> 的基础。</p>
+<h3 id="tff-核心功能">TFF 核心功能</h3>
+<ul>
+<li><strong>联邦数据、联邦数据存放位置/数据类型</strong>
+<ul>
+<li>数据放置在服务器 (<code>@SERVER</code>) 或客户端 (<code>@CLIENTS</code>)，如 <code>{float32}@CLIENTS</code> 表示客户端上的浮点数集合。</li>
+<li>有分布式语义，忽略通信细节</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>数据转换方式/联邦计算</strong>
+<ul>
+<li>需要 <code>@tff.federated_computation</code> 装饰器装饰</li>
+<li>定义分布式逻辑，可以管理数据在客户端服务器间的流动，而无需写通信代码。例如，<code>federated_mean</code> 计算客户端数据的平均值并返回至服务器。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#  例子：对所有客户端的分数平均</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@tff.federated_computation</span><span class="p">(</span><span class="n">tff</span><span class="o">.</span><span class="n">FederatedType</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">tff</span><span class="o">.</span><span class="n">CLIENTS</span><span class="p">))</span> <span class="c1"># 表示输入是客户端设备上的浮点数</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">compute_average</span><span class="p">(</span><span class="n">client_scores</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">tff</span><span class="o">.</span><span class="n">federated_mean</span><span class="p">(</span><span class="n">client_scores</span><span class="p">)</span>
+</span></span></code></pre></div><ul>
+<li><strong>联邦算子</strong>
+<ul>
+<li>tff内置的实现好的联邦计算</li>
+<li><code>federated_broadcast</code>：从服务器广播数据到客户端。</li>
+<li><code>federated_map</code>：在客户端并行执行计算。</li>
+<li><code>federated_mean</code>：聚合客户端结果到服务器。</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-tff-自定义构建联邦学习的步骤">使用 TFF 自定义构建联邦学习的步骤</h3>
+<p>FedAvg 算法为例（和TensorFlow实现有哪些不同）：</p>
+<ol>
+<li><strong>数据准备</strong>
+<ul>
+<li>使用 TFF 加载联邦数据集，如mnist的联邦版本： <code>tff.simulation.datasets.emnist.load_data()</code>。</li>
+</ul>
+</li>
+<li><strong>模型准备</strong>
+<ul>
+<li>要把原本用tf.Keras写的模型用 TFF 的 <code>tff.learning.models.functional_model_from_keras</code> 包装，将这些本地逻辑封装并扩展到分布式环境。</li>
+</ul>
+</li>
+<li><strong>初始化服务器状态</strong>
+<ul>
+<li>模型初始化，返初始化逻辑放在 <code>@tff.federated_computation</code> 中并指定为 <code>tff.SERVER</code> 放置位置。</li>
+</ul>
+</li>
+<li><strong>客户端更新</strong>
+<ul>
+<li>本地训练逻辑由 tf.Keras实现</li>
+<li>用 <code>tff.tensorflow.computation</code> 封装，结合 <code>federated_map</code> 分发到客户端。</li>
+</ul>
+</li>
+<li><strong>服务器广播</strong>
+<ul>
+<li>使用 <code>federated_broadcast</code> 将服务器权重发送到客户端。</li>
+</ul>
+</li>
+<li><strong>客户端上传与聚合</strong>
+<ul>
+<li>使用 <code>federated_mean</code> 聚合客户端更新后的权重。</li>
+</ul>
+</li>
+<li><strong>服务器更新</strong>
+<ul>
+<li>用 tf.Keras实现 <code>server_update</code>更新逻辑。</li>
+<li>然后 <code>tff.tensorflow.computation</code> 封装并应用。</li>
+</ul>
+</li>
+</ol>
+<h3 id="可复用-tensorflow-代码的步骤">可复用 TensorFlow 代码的步骤</h3>
+<p>TFF 与 TensorFlow 高度兼容，许多代码可直接复用：</p>
+<ul>
+<li>使用 <code>tf.keras</code> 定义模型结构</li>
+<li>使用 <code>tf.data.Dataset</code> 进行数据预处理，如进行本地数据转换，如展平图像、分批处理。</li>
+<li>本地训练逻辑，如客户端的梯度计算（<code>tf.GradientTape</code>）和优化（<code>tf.keras.optimizers</code>）。</li>
+<li>在服务器端使用 Keras 模型计算损失和指标。</li>
+</ul>
+<p>TFF 的作用是将这些本地逻辑封装并扩展到分布式环境。</p>
+<blockquote>
+<p>通过@tff.federated_computation和数据类型以及位置 封装</p></blockquote>
+<h2 id="隐私保护支持">隐私保护支持</h2>
+<p>原生支持差分隐私，没有内置同态加密支持，需要将NTRU同态加密  使用联邦算法实现（使用@tff.federated_computation装饰，并定义好数据和位置）</p>
+
+
+  <article>
+    <h1 id="tff">TFF</h1>
+<h2 id="learning-api">learning API</h2>
+<p><code>tff.learning</code>包封装了常见的联邦学习算法（如 FedAvg）</p>
+<p>直接用就行 如直接用 ： <code>tff.learning.algorithms.build_weighted_fed_avg</code></p>
+<h2 id="core-api">Core API</h2>
+<p>主要在<code>tff</code>包下面</p>
+<p>允许自定义联邦学习算法的分布式逻辑。</p>
+<p>将 TensorFlow 代码与分布式通信操作结合，无需关注通信细节。</p>
+<p>是构建 <code>tff.learning</code> 的基础。</p>
+<h3 id="tff-核心功能">TFF 核心功能</h3>
+<ul>
+<li><strong>联邦数据、联邦数据存放位置/数据类型</strong>
+<ul>
+<li>数据放置在服务器 (<code>@SERVER</code>) 或客户端 (<code>@CLIENTS</code>)，如 <code>{float32}@CLIENTS</code> 表示客户端上的浮点数集合。</li>
+<li>有分布式语义，忽略通信细节</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>数据转换方式/联邦计算</strong>
+<ul>
+<li>需要 <code>@tff.federated_computation</code> 装饰器装饰</li>
+<li>定义分布式逻辑，可以管理数据在客户端服务器间的流动，而无需写通信代码。例如，<code>federated_mean</code> 计算客户端数据的平均值并返回至服务器。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#  例子：对所有客户端的分数平均</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@tff.federated_computation</span><span class="p">(</span><span class="n">tff</span><span class="o">.</span><span class="n">FederatedType</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">tff</span><span class="o">.</span><span class="n">CLIENTS</span><span class="p">))</span> <span class="c1"># 表示输入是客户端设备上的浮点数</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">compute_average</span><span class="p">(</span><span class="n">client_scores</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">tff</span><span class="o">.</span><span class="n">federated_mean</span><span class="p">(</span><span class="n">client_scores</span><span class="p">)</span>
+</span></span></code></pre></div><ul>
+<li><strong>联邦算子</strong>
+<ul>
+<li>tff内置的实现好的联邦计算</li>
+<li><code>federated_broadcast</code>：从服务器广播数据到客户端。</li>
+<li><code>federated_map</code>：在客户端并行执行计算。</li>
+<li><code>federated_mean</code>：聚合客户端结果到服务器。</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-tff-自定义构建联邦学习的步骤">使用 TFF 自定义构建联邦学习的步骤</h3>
+<p>FedAvg 算法为例（和TensorFlow实现有哪些不同）：</p>
+<ol>
+<li><strong>数据准备</strong>
+<ul>
+<li>使用 TFF 加载联邦数据集，如mnist的联邦版本： <code>tff.simulation.datasets.emnist.load_data()</code>。</li>
+</ul>
+</li>
+<li><strong>模型准备</strong>
+<ul>
+<li>要把原本用tf.Keras写的模型用 TFF 的 <code>tff.learning.models.functional_model_from_keras</code> 包装，将这些本地逻辑封装并扩展到分布式环境。</li>
+</ul>
+</li>
+<li><strong>初始化服务器状态</strong>
+<ul>
+<li>模型初始化，返初始化逻辑放在 <code>@tff.federated_computation</code> 中并指定为 <code>tff.SERVER</code> 放置位置。</li>
+</ul>
+</li>
+<li><strong>客户端更新</strong>
+<ul>
+<li>本地训练逻辑由 tf.Keras实现</li>
+<li>用 <code>tff.tensorflow.computation</code> 封装，结合 <code>federated_map</code> 分发到客户端。</li>
+</ul>
+</li>
+<li><strong>服务器广播</strong>
+<ul>
+<li>使用 <code>federated_broadcast</code> 将服务器权重发送到客户端。</li>
+</ul>
+</li>
+<li><strong>客户端上传与聚合</strong>
+<ul>
+<li>使用 <code>federated_mean</code> 聚合客户端更新后的权重。</li>
+</ul>
+</li>
+<li><strong>服务器更新</strong>
+<ul>
+<li>用 tf.Keras实现 <code>server_update</code>更新逻辑。</li>
+<li>然后 <code>tff.tensorflow.computation</code> 封装并应用。</li>
+</ul>
+</li>
+</ol>
+<h3 id="可复用-tensorflow-代码的步骤">可复用 TensorFlow 代码的步骤</h3>
+<p>TFF 与 TensorFlow 高度兼容，许多代码可直接复用：</p>
+<ul>
+<li>使用 <code>tf.keras</code> 定义模型结构</li>
+<li>使用 <code>tf.data.Dataset</code> 进行数据预处理，如进行本地数据转换，如展平图像、分批处理。</li>
+<li>本地训练逻辑，如客户端的梯度计算（<code>tf.GradientTape</code>）和优化（<code>tf.keras.optimizers</code>）。</li>
+<li>在服务器端使用 Keras 模型计算损失和指标。</li>
+</ul>
+<p>TFF 的作用是将这些本地逻辑封装并扩展到分布式环境。</p>
+<blockquote>
+<p>通过@tff.federated_computation和数据类型以及位置 封装</p></blockquote>
+<h2 id="隐私保护支持">隐私保护支持</h2>
+<p>原生支持差分隐私，没有内置同态加密支持，需要将NTRU同态加密  使用联邦算法实现（使用@tff.federated_computation装饰，并定义好数据和位置）</p>
+
+  </article>
+
+  
+  <aside class="toc">
+    <h2>目录</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#learning-api">learning API</a></li>
+    <li><a href="#core-api">Core API</a>
+      <ul>
+        <li><a href="#tff-核心功能">TFF 核心功能</a></li>
+        <li><a href="#使用-tff-自定义构建联邦学习的步骤">使用 TFF 自定义构建联邦学习的步骤</a></li>
+        <li><a href="#可复用-tensorflow-代码的步骤">可复用 TensorFlow 代码的步骤</a></li>
+      </ul>
+    </li>
+    <li><a href="#隐私保护支持">隐私保护支持</a></li>
+  </ul>
+</nav>
+  </aside>
+  
+</main>
+
+  <footer>
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false}
+          ]
+        });">
+</script>
+
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+  
+  <hr/>
+  © <a href="https://baicai220.github.io/">baicai</a> 2025 &ndash; 2025 | <a href="https://github.com/baicai220?tab=repositories">Github</a>
+  
+  </footer>
+  </body>
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const tocLinks = document.querySelectorAll(".toc a");
+  const headingElems = Array.from(tocLinks).map(link => document.getElementById(decodeURIComponent(link.hash.substring(1))));
+
+  function onScroll() {
+    let index = headingElems.findIndex(el => el.getBoundingClientRect().top > 100);
+    if (index === -1) index = headingElems.length - 1;
+    if (index > 0 && headingElems[index].getBoundingClientRect().top > 100) index--;
+    tocLinks.forEach(link => link.classList.remove("active"));
+    if (index >= 0) tocLinks[index].classList.add("active");
+  }
+
+  window.addEventListener("scroll", onScroll);
+  onScroll();
+});
+</script>
+<style>
+.toc a.active {
+  font-weight: bold;
+  color: #000;
+}
+</style>
+
+
+
+  
+<script type="module">  
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; 
+    mermaid.initialize({ startOnLoad: true });  
+</script>  
+<script>  
+    
+    Array.from(document.getElementsByClassName("language-mermaid")).forEach(  
+        (el) => {  
+            el.parentElement.outerHTML = `<div class="mermaid">${el.innerHTML}</div>`;  
+        }  
+    );  
+</script>  
+<style>  
+       
+    .mermaid svg {  
+        display: block;  
+        margin: auto;  
+    }  
+</style>  
+

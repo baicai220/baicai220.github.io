@@ -29,6 +29,8 @@
     <hr/>
     </nav>
 
+<link rel="stylesheet" href="/css/custom.css">
+
 
 
 <h1>机器学习</h1>
@@ -41,8 +43,8 @@
   
   
   <li>
-    <span class="date">2025/06/16</span>
-    <a href="/post/2025/06/16/fed_avg/">fed_avg</a>
+    <span class="date">2025/04/03</span>
+    <a href="/post/2025/04/03/fed_avg/">fed_avg</a>
   </li>
   
 </ul>
@@ -76,4 +78,28 @@
   </footer>
   </body>
 </html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const tocLinks = document.querySelectorAll(".toc a");
+  const headingElems = Array.from(tocLinks).map(link => document.getElementById(decodeURIComponent(link.hash.substring(1))));
+
+  function onScroll() {
+    let index = headingElems.findIndex(el => el.getBoundingClientRect().top > 100);
+    if (index === -1) index = headingElems.length - 1;
+    if (index > 0 && headingElems[index].getBoundingClientRect().top > 100) index--;
+    tocLinks.forEach(link => link.classList.remove("active"));
+    if (index >= 0) tocLinks[index].classList.add("active");
+  }
+
+  window.addEventListener("scroll", onScroll);
+  onScroll();
+});
+</script>
+<style>
+.toc a.active {
+  font-weight: bold;
+  color: #000;
+}
+</style>
 

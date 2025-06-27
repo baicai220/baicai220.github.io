@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>联邦学习隐私保护综述 on baicai</title>
+    <link>https://baicai220.github.io/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%BB%BC%E8%BF%B0/</link>
+    <description>Recent content in 联邦学习隐私保护综述 on baicai</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%BB%BC%E8%BF%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>联邦学习及其安全与隐私保护研究综述</title>
+      <link>https://baicai220.github.io/post/2025/04/02/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E5%8F%8A%E5%85%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/</link>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/04/02/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E5%8F%8A%E5%85%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/</guid>
+      <description>&lt;h1 id=&#34;联邦学习及其安全与隐私保护研究综述&#34;&gt;联邦学习及其安全与隐私保护研究综述&lt;/h1&gt;&#xA;&lt;h2 id=&#34;联邦学习&#34;&gt;联邦学习&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;联邦学习定义:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;假设有$n$个提供数据参与模型训练的参与方，各参与方用$F_i$表示，各参与方所拥有的数据为$D_i$，其中，$i = \{1,2,\cdots,n\}$ ，使用各参与方的数据进行模型训练，传统的方法是将所有数据收集到一个中心节点，使用整合后的所有数据$D = D_1\cup D_2\cup\cdots\cup D_n$进行模型训练，该方式训练所得的模型记为$M_{sum}$、准确率记为$V_{sum}$ 。&lt;/p&gt;&#xA;&lt;p&gt;在联邦学习中，各参与方$F_1,F_2,\cdots,F_n$分别使用各自的数据$D_1,D_2,\cdots,D_n$在各客户端本地进行局部模型训练，记聚合后的全局模型为$M_{fed}$、准确率为$V_{fed}$，其间任意参与方$F_i$都无法获知除本身以外的数据$D_i$ 。若存在非负实数$\delta$，满足$\vert V_{sum} - V_{fed}\vert &lt; \delta$，则称模型$M_{fed}$的性能损失为$\delta$，其中，$\delta$​是一个足够小的浮点数，即表示通过 联邦学习方式训练所得的模型准确率应与传统将所有数据放在一起进行模型训练的方式的准确率相差不大。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;联邦学习分类：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-mermaid&#34; data-lang=&#34;mermaid&#34;&gt;flowchart LR&#xA;    A[联邦学习] --&amp;gt; B[数据分布]&#xA;    A --&amp;gt; C[网络拓扑]&#xA;    A --&amp;gt; D[设备数量和性能]&#xA;    B --&amp;gt; B1[横向联邦学习]&#xA;        B1 --&amp;gt; B11[数据特征有较多重叠]&#xA;        B1 --&amp;gt; B12[数据样本重叠较少]&#xA;    B --&amp;gt; B2[纵向联邦学习]&#xA;        B2 --&amp;gt; B21[数据样本有较多重叠]&#xA;        B2 --&amp;gt; B22[数据特征重叠较少]&#xA;    B --&amp;gt; B3[联邦迁移学习]&#xA;        B3 --&amp;gt; B31[数据特征和数据样本均有较少重叠]&#xA;    C --&amp;gt; C1[中心化联邦学习]&#xA;        C1 --&amp;gt; C11[需要中央节点进行协调]&#xA;    C --&amp;gt; C2[去中心化联邦学习]&#xA;        C2 --&amp;gt; C21[无需中央节点进行协调]&#xA;    D --&amp;gt; D1[跨设备联邦学习]&#xA;        D1 --&amp;gt; D11[适用于手机终端等性能较弱的个人边缘设备]&#xA;    D --&amp;gt; D2[跨筒仓联邦学习]&#xA;        D2 --&amp;gt; D21[适用于企业等组织机构性能较强的终端设备]&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;联邦学习安全&#34;&gt;联邦学习安全&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;安全三要素：&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

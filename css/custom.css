@@ -1,0 +1,30 @@
+.toc {
+  position: fixed;
+  top: 100px; /* 根据你的 header 调整 */
+  right: 30px; /* 如果要在左边改为 left */
+  width: 250px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 1em;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  font-size: 0.9em;
+}
+
+.toc ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.toc li {
+  margin: 0.5em 0;
+}
+
+.toc a {
+  text-decoration: none;
+  color: #333;
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}

@@ -29,6 +29,8 @@
     <hr/>
     </nav>
 
+<link rel="stylesheet" href="/css/custom.css">
+
 
 
 <h1>联邦学习</h1>
@@ -41,8 +43,18 @@
   
   
   <li>
-    <span class="date">2025/06/16</span>
-    <a href="/post/2025/06/16/fed_avg/">fed_avg</a>
+    <span class="date">2025/06/27</span>
+    <a href="/post/2025/06/27/tff/">TFF</a>
+  </li>
+  
+  <li>
+    <span class="date">2025/04/03</span>
+    <a href="/post/2025/04/03/fed_avg/">fed_avg</a>
+  </li>
+  
+  <li>
+    <span class="date">2025/04/02</span>
+    <a href="/post/2025/04/02/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E5%8F%8A%E5%85%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/">联邦学习及其安全与隐私保护研究综述</a>
   </li>
   
 </ul>
@@ -76,4 +88,28 @@
   </footer>
   </body>
 </html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const tocLinks = document.querySelectorAll(".toc a");
+  const headingElems = Array.from(tocLinks).map(link => document.getElementById(decodeURIComponent(link.hash.substring(1))));
+
+  function onScroll() {
+    let index = headingElems.findIndex(el => el.getBoundingClientRect().top > 100);
+    if (index === -1) index = headingElems.length - 1;
+    if (index > 0 && headingElems[index].getBoundingClientRect().top > 100) index--;
+    tocLinks.forEach(link => link.classList.remove("active"));
+    if (index >= 0) tocLinks[index].classList.add("active");
+  }
+
+  window.addEventListener("scroll", onScroll);
+  onScroll();
+});
+</script>
+<style>
+.toc a.active {
+  font-weight: bold;
+  color: #000;
+}
+</style>
 
