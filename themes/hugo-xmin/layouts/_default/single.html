@@ -7,6 +7,19 @@
 
 <main>
 {{ .Content }}
+
+  <article>
+    {{ .Content }}
+  </article>
+
+  {{ if .TableOfContents }}
+  <aside class="toc">
+    <h2>目录</h2>
+    {{ .TableOfContents }}
+  </aside>
+  {{ end }}
 </main>
 
 {{ partial "footer.html" . }}
+<!-- mermaid -->  
+{{- partial "mermaid.html" . -}}

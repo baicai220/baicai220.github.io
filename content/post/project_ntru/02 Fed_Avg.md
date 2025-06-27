@@ -1,6 +1,6 @@
 ---
 title: fed_avg
-date: '2025-06-16'
+date: '2025-04-03'
 categories:
   - 联邦学习
 tags:
@@ -36,9 +36,9 @@ for 每轮$t = 1,2,\dots$, do
 
 &emsp;for 每个客户端$k \in S_t$同时 do
 
-​&emsp;​&emsp;$w_{t + 1}^k \leftarrow$ 客户端更新$(k, w_t)$
+&emsp;​&emsp;$w_{t + 1}^k \leftarrow$ 客户端更新$(k, w_t)$
 
-​&emsp;​&emsp;$w_{t+1}\leftarrow\sum_{k = 1}^{K}\frac{n_k}{n}w_{t + 1}^k$  // $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量
+&emsp;​&emsp;$w_{t+1}\leftarrow\sum_{k = 1}^{K}\frac{n_k}{n}w_{t + 1}^k$  // $n_k$为客户机$k$上的样本数量，$n$为所有被选中客户机的总样本数量
 
 
 
@@ -50,7 +50,7 @@ for 每个本地的epoch $i (1 \sim E)$ do
 
 &emsp;for batch $b \in \beta$ do
 
-​&emsp;​&emsp;$w \leftarrow w - \eta \nabla l(w; b)$ 	// $\nabla$为计算梯度，$l(w; b)$为损失函数
+&emsp;​&emsp;$w \leftarrow w - \eta \nabla l(w; b)$ 	// $\nabla$为计算梯度，$l(w; b)$为损失函数
 
 返回$w$给服务器
 
@@ -65,5 +65,4 @@ for 每个本地的epoch $i (1 \sim E)$ do
 当$E = 1\ B = \infty$时，对应的就是FedSGD，即每一轮客户机一次性将所有本地数据投入训练，更新模型参数。
 
 对于一个有着$n_k$个本地样本的客户机$k$来说，每轮的本地更新次数为$u_k = E \cdot \frac{n_k}{B}$。 
-
 
