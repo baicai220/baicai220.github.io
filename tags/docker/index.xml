@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on baicai</title>
+    <link>https://baicai220.github.io/tags/docker/</link>
+    <description>Recent content in Docker on baicai</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker的使用</title>
+      <link>https://baicai220.github.io/post/2025/06/27/docker%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/docker%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;h1 id=&#34;docker的使用&#34;&gt;docker的使用&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>

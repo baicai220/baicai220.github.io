@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术栈 on baicai</title>
+    <link>https://baicai220.github.io/categories/%E6%8A%80%E6%9C%AF%E6%A0%88/</link>
+    <description>Recent content in 技术栈 on baicai</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/categories/%E6%8A%80%E6%9C%AF%E6%A0%88/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker的使用</title>
+      <link>https://baicai220.github.io/post/2025/06/27/docker%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/docker%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;h1 id=&#34;docker的使用&#34;&gt;docker的使用&lt;/h1&gt;</description>
+    </item>
+    <item>
+      <title>一周学会linux</title>
+      <link>https://baicai220.github.io/post/2025/06/27/%E4%B8%80%E5%91%A8%E5%AD%A6%E4%BC%9Alinux/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/%E4%B8%80%E5%91%A8%E5%AD%A6%E4%BC%9Alinux/</guid>
+      <description>&lt;h1 id=&#34;一周学会linux&#34;&gt;一周学会linux&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>

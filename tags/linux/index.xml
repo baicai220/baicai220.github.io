@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on baicai</title>
+    <link>https://baicai220.github.io/tags/linux/</link>
+    <description>Recent content in Linux on baicai</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一周学会linux</title>
+      <link>https://baicai220.github.io/post/2025/06/27/%E4%B8%80%E5%91%A8%E5%AD%A6%E4%BC%9Alinux/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/%E4%B8%80%E5%91%A8%E5%AD%A6%E4%BC%9Alinux/</guid>
+      <description>&lt;h1 id=&#34;一周学会linux&#34;&gt;一周学会linux&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>

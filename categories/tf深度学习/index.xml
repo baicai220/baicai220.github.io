@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TF深度学习 on baicai</title>
+    <link>https://baicai220.github.io/categories/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link>
+    <description>Recent content in TF深度学习 on baicai</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/categories/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TF深度学习-TF基础</title>
+      <link>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-tf%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-tf%E5%9F%BA%E7%A1%80/</guid>
+      <description>&lt;h1 id=&#34;tf深度学习-tf基础&#34;&gt;TF深度学习-TF基础&lt;/h1&gt;</description>
+    </item>
+    <item>
+      <title>TF深度学习-TF进阶</title>
+      <link>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-tf%E8%BF%9B%E9%98%B6/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-tf%E8%BF%9B%E9%98%B6/</guid>
+      <description>&lt;h1 id=&#34;tf深度学习-tf进阶&#34;&gt;TF深度学习-TF进阶&lt;/h1&gt;</description>
+    </item>
+    <item>
+      <title>TF深度学习-分类</title>
+      <link>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%88%86%E7%B1%BB/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%88%86%E7%B1%BB/</guid>
+      <description>&lt;h1 id=&#34;tf深度学习-分类&#34;&gt;TF深度学习-分类&lt;/h1&gt;</description>
+    </item>
+    <item>
+      <title>TF深度学习-回归</title>
+      <link>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%9B%9E%E5%BD%92/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%9B%9E%E5%BD%92/</guid>
+      <description>&lt;h1 id=&#34;tf深度学习-回归&#34;&gt;TF深度学习-回归&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>

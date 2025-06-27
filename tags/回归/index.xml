@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>回归 on baicai</title>
+    <link>https://baicai220.github.io/tags/%E5%9B%9E%E5%BD%92/</link>
+    <description>Recent content in 回归 on baicai</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://baicai220.github.io/tags/%E5%9B%9E%E5%BD%92/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TF深度学习-回归</title>
+      <link>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%9B%9E%E5%BD%92/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/post/2025/06/27/tf%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%9B%9E%E5%BD%92/</guid>
+      <description>&lt;h1 id=&#34;tf深度学习-回归&#34;&gt;TF深度学习-回归&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>

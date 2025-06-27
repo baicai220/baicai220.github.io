@@ -9,10 +9,52 @@
     <lastBuildDate>Fri, 27 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://baicai220.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Docker</title>
+      <link>https://baicai220.github.io/tags/docker/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hugo-Xmin</title>
+      <link>https://baicai220.github.io/tags/hugo-xmin/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/tags/hugo-xmin/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linux</title>
+      <link>https://baicai220.github.io/tags/linux/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TensorFlow</title>
+      <link>https://baicai220.github.io/tags/tensorflow/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/tags/tensorflow/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>TFF</title>
       <link>https://baicai220.github.io/tags/tff/</link>
       <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
       <guid>https://baicai220.github.io/tags/tff/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>分类</title>
+      <link>https://baicai220.github.io/tags/%E5%88%86%E7%B1%BB/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/tags/%E5%88%86%E7%B1%BB/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>回归</title>
+      <link>https://baicai220.github.io/tags/%E5%9B%9E%E5%BD%92/</link>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://baicai220.github.io/tags/%E5%9B%9E%E5%BD%92/</guid>
       <description></description>
     </item>
     <item>
