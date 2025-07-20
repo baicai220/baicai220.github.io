@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@vuepress/bundler-webpack": "2.0.0-rc.24",
+    "@vuepress/plugin-comment": "2.0.0-rc.112",
     "@vuepress/plugin-docsearch": "2.0.0-rc.112",
     "@vuepress/plugin-feed": "2.0.0-rc.112",
     "@vuepress/plugin-revealjs": "2.0.0-rc.112",

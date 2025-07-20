@@ -2,7 +2,6 @@ import { hopeTheme } from "vuepress-theme-hope";
 
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
-import { feedPlugin } from '@vuepress/plugin-feed'
 
 export default hopeTheme({
   hostname: "https://baicai220.github.io",
@@ -46,19 +45,18 @@ export default hopeTheme({
     intro: "/intro.html",
     medias: {
       Email: "mailto:2650019220@qq.com",
-      Baidu: "https://www.baidu.com",
+      Baidu: "https://www.google.com/",
       BiliBili: "https://www.bilibili.com",
       Youtube: "https://www.youtube.com",
       Zhihu: "https://www.zhihu.com",
       GitHub: "https://github.com",
       Gitee: "https://gitee.com",
       Gitlab: "https://gitlab.com",
-      Gmail: "mailto:xxx@gmail.com",
-      Rss: "https://example.com/feed",
-      VuePressThemeHope: {
-        icon: "https://theme-hope-assets.vuejs.press/logo.svg",
-        link: "https://theme-hope.vuejs.press",
-      },
+      // Rss: "https://example.com/feed",
+      // VuePressThemeHope: {
+      //   icon: "https://theme-hope-assets.vuejs.press/logo.svg",
+      //   link: "https://theme-hope.vuejs.press",
+      // },
     },
   },
 
@@ -164,20 +162,22 @@ export default hopeTheme({
     docsearch: {
       // 你的选项
       // appId, apiKey 和 indexName 是必填的
-      // container: '#docsearch',
       appId: "NL3AP492AZ",
       indexName: "blog",
       apiKey: "bd01a6c084aa5a020bf5193f476ae21b",
     },
 
-    blog: true,
+    // blog: true,
+    blog:{excerptLength : 120},
 
-    // 启用之前需安装 @waline/client
-    // 警告: 这是一个仅供演示的测试服务，在生产环境中请自行部署并使用自己的服务！
-    // comment: {
-    //   provider: "Waline",
-    //   serverURL: "https://waline-comment.vuejs.press",
-    // },
+    comment:{
+      provider: 'Giscus',
+      comment:true,
+      repo: "baicai220/Giscus",
+      repoId: "R_kgDOPPirtw",
+      category: "Announcements",
+      categoryId: "DIC_kwDOPPirt84CtMrw",
+    },
 
     components: {
       components: ["Badge", "VPCard"],
