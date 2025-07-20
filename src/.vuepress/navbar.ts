@@ -2,7 +2,9 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/posts/java-tech-stack/",
+  "/posts/Java-Tech-Stack/",
+  "/posts/CS/",
+  "/posts/ML/",
   {
     text: "TensorFlow",
     icon: "book",
@@ -17,6 +19,7 @@ export default navbar([
         link: "/posts/TensorFlow/TensorFlow-Federated/",
       }],
   },
+  "/projects/",
   // {
   //   text: "博文",
   //   icon: "pen-to-square",

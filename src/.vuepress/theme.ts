@@ -2,15 +2,12 @@ import { hopeTheme } from "vuepress-theme-hope";
 
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
-
-
+import { feedPlugin } from '@vuepress/plugin-feed'
 
 export default hopeTheme({
-
-  
   hostname: "https://baicai220.github.io",
 
-  pageInfo:['Date','Category','Tag'],
+  pageInfo: ["Date", "Category", "Tag"],
 
   // 深色模式配置
   darkmode: "toggle", // 或 "toggle", "auto", "enable", "disable"
@@ -39,8 +36,8 @@ export default hopeTheme({
   sidebar,
 
   // 页脚
-  footer: "默认页脚",
-  displayFooter: true,
+  footer: "页脚啥也没写...",
+  displayFooter: false, // 是否显示页脚
 
   // 博客相关
   blog: {
@@ -48,21 +45,16 @@ export default hopeTheme({
     description: "写写东西...",
     intro: "/intro.html",
     medias: {
-      Baidu: "https://example.com",
-      BiliBili: "https://example.com",
-      Discord: "https://example.com",
-      Email: "mailto:info@example.com",
-      Gitee: "https://example.com",
-      GitHub: "https://example.com",
-      Gitlab: "https://example.com",
-      Gmail: "mailto:info@example.com",
-      QQ: "https://example.com",
-      Rss: "https://example.com",
-      Steam: "https://example.com",
-      Twitter: "https://example.com",
-      Wechat: "https://example.com",
-      Youtube: "https://example.com",
-      Zhihu: "https://example.com",
+      Email: "mailto:2650019220@qq.com",
+      Baidu: "https://www.baidu.com",
+      BiliBili: "https://www.bilibili.com",
+      Youtube: "https://www.youtube.com",
+      Zhihu: "https://www.zhihu.com",
+      GitHub: "https://github.com",
+      Gitee: "https://gitee.com",
+      Gitlab: "https://gitlab.com",
+      Gmail: "mailto:xxx@gmail.com",
+      Rss: "https://example.com/feed",
       VuePressThemeHope: {
         icon: "https://theme-hope-assets.vuejs.press/logo.svg",
         link: "https://theme-hope.vuejs.press",
@@ -73,9 +65,9 @@ export default hopeTheme({
   // 加密配置
   encrypt: {
     config: {
-      "/demo/encrypt.html": {
-        hint: "Password: 1234",
-        password: "1234",
+      "/projects/": {
+        hint: "输入密码查看：",
+        password: "123456",
       },
     },
   },
@@ -172,10 +164,10 @@ export default hopeTheme({
     docsearch: {
       // 你的选项
       // appId, apiKey 和 indexName 是必填的
-        // container: '#docsearch',
-        appId: 'NL3AP492AZ',
-        indexName: 'blog',
-        apiKey: 'bd01a6c084aa5a020bf5193f476ae21b'
+      // container: '#docsearch',
+      appId: "NL3AP492AZ",
+      indexName: "blog",
+      apiKey: "bd01a6c084aa5a020bf5193f476ae21b",
     },
 
     blog: true,

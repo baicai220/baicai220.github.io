@@ -1,8 +1,9 @@
 ---
 icon: circle-info
-cover: /logo.jpg
+# cover: /logo.png
 ---
 
-# 介绍页
+# intro
 
-将你的个人介绍和档案放置在此处。
+
+来自菜虚村的一名小学生~

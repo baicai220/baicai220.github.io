@@ -1,6 +1,6 @@
 ---
 title: 机器学习
-icon: book
+icon: carbon:machine-learning-model
 index: false
 category:
   - 机器学习

@@ -11,9 +11,25 @@ export default sidebar({
     //   children: "structure",
     // },
     {
-      text: "文章",
-      icon: "book",
+      text: "随便写写",
+      icon: "streamline-ultimate-color:paper-write",
+      prefix: "others/",
+      link: "others/",
+      children: "structure",
+    },
+
+    {
+      text: "学习笔记",
+      icon: "streamline-ultimate-color:notes-book",
       prefix: "posts/",
+      children: "structure",
+    },
+
+    {
+      text: "projects",
+      icon: "ant-design:code-filled",
+      prefix: "projects/",
+      link: "projects/",
       children: "structure",
     },
     "intro",

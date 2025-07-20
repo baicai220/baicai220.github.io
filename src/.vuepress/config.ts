@@ -10,9 +10,7 @@ export default defineUserConfig({
   description: "",
 
   theme,
-  // pagePatterns: ['**/*.md',  '!**/intro.md', '!.vuepress', '!node_modules']
-
-
+  
   // 和 PWA 一起启用
   // shouldPrefetch: false,
 });
