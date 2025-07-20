@@ -6,10 +6,12 @@ export default defineUserConfig({
   base: "/",
 
   lang: "zh-CN",
-  title: "博客演示",
-  description: "vuepress-theme-hope 的博客演示",
+  title: "",
+  description: "",
 
   theme,
+  // pagePatterns: ['**/*.md',  '!**/intro.md', '!.vuepress', '!node_modules']
+
 
   // 和 PWA 一起启用
   // shouldPrefetch: false,
