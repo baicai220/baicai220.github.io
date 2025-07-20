@@ -1,9 +1,9 @@
 ---
-title: CS
+title: 计算机基础
 icon: hugeicons:ai-computer
 index: false
 category:
-  - CS
+  - 计算机基础
 ---
 
 <Catalog />

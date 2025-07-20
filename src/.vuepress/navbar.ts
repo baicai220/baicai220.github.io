@@ -2,21 +2,21 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/posts/Java-Tech-Stack/",
-  "/posts/CS/",
-  "/posts/ML/",
+  "/posts/java/",
+  "/posts/cs/",
+  "/posts/ml/",
   {
     text: "TensorFlow",
     icon: "book",
-    prefix: "/TensorFlow",
+    prefix: "/tensorflow",
     children: [{
         text: "TensorFlow",
         icon: "pen-to-square",
-        link: "/posts/TensorFlow/",
+        link: "/posts/tensorflow/",
       },{
         text: "TFF",
         icon: "pen-to-square",
-        link: "/posts/TensorFlow/TensorFlow-Federated/",
+        link: "/posts/tensorflow/tensorflow-federated/",
       }],
   },
   "/projects/",
