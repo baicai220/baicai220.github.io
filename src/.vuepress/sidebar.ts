@@ -24,6 +24,12 @@ export default sidebar({
       prefix: "posts/",
       children: "structure",
     },
+    {
+      text: "看论文",
+      icon: "streamline-ultimate:notes-paper-text-bold",
+      prefix: "papers/",
+      children: "structure",
+    },
 
     {
       text: "projects",

@@ -18,7 +18,7 @@ export default hopeTheme({
   //  focus: true,
 
   author: {
-    name: "光头强",
+    name: "白菜",
     url: "https://github.com/baicai220",
   },
 
@@ -35,13 +35,13 @@ export default hopeTheme({
   sidebar,
 
   // 页脚
-  footer: "页脚啥也没写...",
+  footer: "基于VuePress Theme Hope构建",
   displayFooter: false, // 是否显示页脚
 
   // 博客相关
   blog: {
     articlePerPage: 10,
-    description: "写写东西...",
+    description: "爱咋写咋写~",
     intro: "/intro.html",
     medias: {
       Email: "mailto:2650019220@qq.com",

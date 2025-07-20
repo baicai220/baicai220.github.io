@@ -4,18 +4,31 @@ export default navbar([
   "/",
   "/posts/java/",
   "/posts/cs/",
-  "/posts/ml/",
+    {
+    text: "机器学习",
+    icon: "carbon:machine-learning-model",
+    prefix: "/posts/ml/",
+    children: [{
+        text: "机器学习",
+        icon: "carbon:machine-learning-model",
+        link: "/posts/ml/",
+      },{
+        text: "深度学习",
+        icon: "eos-icons:machine-learning",
+        link: "/posts/deeplearning/",
+      }],
+  },
   {
     text: "TensorFlow",
-    icon: "book",
-    prefix: "/tensorflow",
+    icon: "simple-icons:tensorflow",
+    prefix: "/posts/tensorflow/",
     children: [{
         text: "TensorFlow",
-        icon: "pen-to-square",
+        icon: "simple-icons:tensorflow",
         link: "/posts/tensorflow/",
       },{
         text: "TFF",
-        icon: "pen-to-square",
+        icon: "book",
         link: "/posts/tensorflow/tensorflow-federated/",
       }],
   },
