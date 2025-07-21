@@ -2,8 +2,7 @@
 title: TensorFlow
 icon: simple-icons:tensorflow
 index: false
-category:
-  - TensorFlow
+date: 2025-07-01
 ---
 
 <Catalog />

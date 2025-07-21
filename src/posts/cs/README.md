@@ -2,8 +2,7 @@
 title: 计算机基础
 icon: hugeicons:ai-computer
 index: false
-category:
-  - 计算机基础
+date: 2025-07-01
 ---
 
 <Catalog />

@@ -1,9 +1,8 @@
 ---
 title: TensorFlow-Federated
-icon: book
+icon: simple-icons:tensorflow
 index: false
-category:
-  - TensorFlow-Federated
+date: 2025-07-01
 ---
 
 <Catalog />

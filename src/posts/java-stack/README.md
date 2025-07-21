@@ -2,8 +2,7 @@
 title: Java技术栈
 icon: ri:java-line
 index: false
-category:
-  - Java技术栈
+date: 2025-07-01
 ---
 
 <Catalog />

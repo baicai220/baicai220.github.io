@@ -1,6 +1,6 @@
 ---
 icon: pen-to-square
-Date: 2025-07-20
+date: 2025-07-20
 category:
   - 机器学习
 tag:

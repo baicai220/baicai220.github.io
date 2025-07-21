@@ -1,6 +1,6 @@
 ---
 icon: pen-to-square
-Date: 2025-07-20
+date: 2025-07-20
 category:
   - 深度学习
 tag:

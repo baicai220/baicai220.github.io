@@ -2,7 +2,7 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/posts/java/",
+  "/posts/java-stack/",
   "/posts/cs/",
     {
     text: "机器学习",
@@ -32,7 +32,7 @@ export default navbar([
         link: "/posts/tensorflow/tensorflow-federated/",
       }],
   },
-  "/projects/",
+  "/posts/projects/",
   // {
   //   text: "博文",
   //   icon: "pen-to-square",
