@@ -311,20 +311,20 @@ package用于指明该文件中定义的类、接口等结构所在的包：`pac
 一个 java 文件只能有一个 package 语句，且作为第一条语句。
 
 ### JDK 中主要的包介绍
-+ java.lang ----包含一些Java语言的核心类，如String、Math、Integer、 System和Thread，提供常用功能
-+ java.net ----包含执行与网络相关的操作的类和接口。 
-+ java.io ----包含能提供多种输入/输出功能的类。 
-+ java.util ----包含一些实用工具类，如定义系统特性、接口的集合框架类、使用与日期日历相关的函数。 
-+ java.text ----包含了一些java格式化相关的类 
-+ java.sql ----包含了java进行JDBC数据库编程的相关类/接口 
-+ java.awt ----包含了构成抽象窗口工具集（abstract window toolkits）的多个类，这些类被用来构建和管理应用程序的图形用户界面(GUI)。
++ `java.lang` ----包含一些Java语言的核心类，如String、Math、Integer、 System和Thread，提供常用功能
++ `java.net` ----包含执行与网络相关的操作的类和接口。 
++ `java.io` ----包含能提供多种输入/输出功能的类。 
++ `java.util` ----包含一些实用工具类，如定义系统特性、接口的集合框架类、使用与日期日历相关的函数。 
++ `java.text` ----包含了一些java格式化相关的类 
++ `java.sql` ----包含了java进行JDBC数据库编程的相关类/接口 
++ `java.awt` ----包含了构成抽象窗口工具集（abstract window toolkits）的多个类，这些类被用来构建和管理应用程序的图形用户界面(GUI)。
 
 ### import
 `import 包名.类名;`
 
 + import语句，声明在包的声明和类的声明之间。
-+ 使用a.* ，表示可以导入a包下的所有的结构。如：使用java.util.*，一次性导入util包下所有的类或接口。
-+ 如果导入的类或接口是java.lang包下的，或者当前包下的，则可以省略此import语句。
++ 使用`a.*` ，表示可以导入a包下的所有的结构。如：使用java.util.*，一次性导入util包下所有的类或接口。
++ 如果导入的类或接口是`java.lang`包下的，或者当前包下的，则可以省略此import语句。
 + 如果在代码中使用不同包下的同名的类，那么就需要使用类的全类名的方式指明调用的是哪个类。
 
 

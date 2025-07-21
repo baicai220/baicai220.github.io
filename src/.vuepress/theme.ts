@@ -63,7 +63,7 @@ export default hopeTheme({
   // 加密配置
   encrypt: {
     config: {
-      "/projects/": {
+      "/posts/projects/": {
         hint: "输入密码查看：",
         password: "123456",
       },
