@@ -28,7 +28,7 @@ export default navbar([
         link: "/posts/tensorflow/",
       },{
         text: "TFF",
-        icon: "book",
+        icon: "simple-icons:tensorflow",
         link: "/posts/tensorflow/tensorflow-federated/",
       }],
   },

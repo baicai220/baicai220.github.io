@@ -168,7 +168,7 @@ export default hopeTheme({
     },
 
     // blog: true,
-    blog:{excerptLength : 120},
+    blog:{excerptLength : 100},
 
     comment:{
       provider: 'Giscus',
