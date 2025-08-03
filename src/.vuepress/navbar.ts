@@ -4,35 +4,27 @@ export default navbar([
   "/",
   "/posts/java-stack/",
   "/posts/cs/",
-    {
-    text: "机器学习",
-    icon: "carbon:machine-learning-model",
-    prefix: "/posts/ml/",
-    children: [{
-        text: "机器学习",
-        icon: "carbon:machine-learning-model",
-        link: "/posts/ml/",
-      },{
-        text: "深度学习",
-        icon: "eos-icons:machine-learning",
-        link: "/posts/deeplearning/",
-      }],
-  },
-  {
-    text: "TensorFlow",
-    icon: "simple-icons:tensorflow",
-    prefix: "/posts/tensorflow/",
-    children: [{
-        text: "TensorFlow",
-        icon: "simple-icons:tensorflow",
-        link: "/posts/tensorflow/",
-      },{
-        text: "TFF",
-        icon: "simple-icons:tensorflow",
-        link: "/posts/tensorflow/tensorflow-federated/",
-      }],
-  },
-  "/posts/projects/",
+  "/posts/ml/",
+  "/posts/tensorflow/",
+  // {
+  //   text: "TensorFlow",
+  //   icon: "simple-icons:tensorflow",
+  //   prefix: "/posts/tensorflow/",
+  //   children: [{
+  //       text: "TF",
+  //       icon: "simple-icons:tensorflow",
+  //       link: "/posts/tensorflow/TF/",
+  //     },{
+  //       text: "TFF",
+  //       icon: "simple-icons:tensorflow",
+  //       link: "/posts/tensorflow/TFF/",
+  //     },{
+  //       text: "TFE",
+  //       icon: "simple-icons:tensorflow",
+  //       link: "/posts/tensorflow/TFE/",
+  //     }],
+  // },
+  // "/posts/projects/",
   // {
   //   text: "博文",
   //   icon: "pen-to-square",
