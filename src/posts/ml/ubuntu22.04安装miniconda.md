@@ -1,12 +1,3 @@
----
-icon: pen-to-square
-date: 2025-07-20
-category:
-  - 深度学习
-tag:
-  - conda
----
-
 # ubuntu22.04安装miniconda
 
 ## conda
