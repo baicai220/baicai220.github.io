@@ -2,29 +2,9 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/posts/java-stack/",
-  "/posts/cs/",
+  "/posts/stack/",
   "/posts/ml/",
-  "/posts/tensorflow/",
-  // {
-  //   text: "TensorFlow",
-  //   icon: "simple-icons:tensorflow",
-  //   prefix: "/posts/tensorflow/",
-  //   children: [{
-  //       text: "TF",
-  //       icon: "simple-icons:tensorflow",
-  //       link: "/posts/tensorflow/TF/",
-  //     },{
-  //       text: "TFF",
-  //       icon: "simple-icons:tensorflow",
-  //       link: "/posts/tensorflow/TFF/",
-  //     },{
-  //       text: "TFE",
-  //       icon: "simple-icons:tensorflow",
-  //       link: "/posts/tensorflow/TFE/",
-  //     }],
-  // },
-  // "/posts/projects/",
+  "/posts/projects/",
   // {
   //   text: "博文",
   //   icon: "pen-to-square",
