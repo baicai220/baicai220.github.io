@@ -13,7 +13,7 @@ export default sidebar({
     },
     {
       text: "技术栈",
-      icon: "ri:java-line",
+      icon: "pixel:technology",
       prefix: "posts/stack/",
       collapsible: true,
       link: "posts/stack/",
